@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.13</title>
+<title>脳内スキャナー v3.14</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -65,6 +65,13 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
   100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(var(--sc));opacity:0}
 }
 .seikeiJudge{position:absolute;left:50%;top:73%;transform:translate(-50%,-50%);z-index:35;width:min(22vw,105px);height:min(22vw,105px);border:5px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:min(14vw,64px);line-height:1;background:rgba(0,0,0,.22);text-shadow:0 2px 10px #000;pointer-events:none}
+
+.barrage{position:absolute;z-index:17;pointer-events:none;font-weight:1000;white-space:nowrap;animation:barrageFly var(--dur) linear forwards}
+@keyframes barrageFly{0%{transform:translateX(0) rotate(var(--rot));opacity:0}8%{opacity:1}90%{opacity:1}100%{transform:translateX(var(--travel)) rotate(var(--rot));opacity:0}}
+.dropFx{position:absolute;z-index:17;pointer-events:none;font-weight:1000;white-space:nowrap;animation:dropFly var(--dur) cubic-bezier(.18,.65,.3,1) forwards}
+@keyframes dropFly{0%{transform:translateY(-18vh) rotate(var(--rot)) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(115vh) rotate(calc(var(--rot) + 120deg)) scale(1.15);opacity:0}}
+.sidePop{position:absolute;z-index:17;pointer-events:none;font-weight:1000;white-space:nowrap;animation:sidePopFly var(--dur) ease-out forwards}
+@keyframes sidePopFly{0%{transform:translateX(var(--from)) scale(.35) rotate(var(--rot));opacity:0}20%{opacity:1}65%{transform:translateX(0) scale(1.15) rotate(0deg);opacity:1}100%{transform:translateX(var(--to)) scale(.8);opacity:0}}
 </style>
 </head>
 <body>
@@ -287,6 +294,47 @@ function radialBurst(word,delay){
  },delay);
 }
 
+
+function accentWord(main){
+ if(main==="整形"&&Math.random()<.42) return ["目","鼻","顎","乳"][Math.floor(Math.random()*4)];
+ if(main==="腹減った"&&Math.random()<.42) return ["寿司","焼肉","ステーキ","天ぷら"][Math.floor(Math.random()*4)];
+ if((main==="裏引き"||main==="枕")&&Math.random()<.25) return Math.random()<.5?"金ヅル":"色恋";
+ return main;
+}
+function barrageFx(main,delay){
+ setTimeout(()=>{
+   const n=8+Math.floor(Math.random()*9), right=Math.random()<.5;
+   for(let i=0;i<n;i++) setTimeout(()=>{
+     const e=document.createElement("div"); e.className="barrage"; e.textContent=accentWord(main);
+     e.style.top=(6+Math.random()*78)+"vh"; e.style.left=right?"-35vw":"105vw";
+     e.style.setProperty("--travel",right?"145vw":"-145vw"); e.style.setProperty("--rot",(-12+Math.random()*24)+"deg");
+     e.style.setProperty("--dur",(900+Math.random()*900)+"ms"); e.style.fontSize=(18+Math.random()*34)+"px";
+     e.style.color=colors[Math.floor(Math.random()*colors.length)]; stage.appendChild(e); setTimeout(()=>e.remove(),2100);
+   },i*65);
+ },delay);
+}
+function rainFx(main,delay){
+ setTimeout(()=>{
+   for(let i=0;i<16;i++) setTimeout(()=>{
+     const e=document.createElement("div"); e.className="dropFx"; e.textContent=accentWord(main);
+     e.style.left=(2+Math.random()*88)+"vw"; e.style.top="-10vh"; e.style.setProperty("--rot",(-35+Math.random()*70)+"deg");
+     e.style.setProperty("--dur",(1100+Math.random()*1000)+"ms"); e.style.fontSize=(17+Math.random()*30)+"px";
+     e.style.color=colors[Math.floor(Math.random()*colors.length)]; stage.appendChild(e); setTimeout(()=>e.remove(),2400);
+   },i*55);
+ },delay);
+}
+function sideFx(main,delay){
+ setTimeout(()=>{
+   for(let i=0;i<10;i++) setTimeout(()=>{
+     const e=document.createElement("div"); e.className="sidePop"; e.textContent=accentWord(main);
+     const left=Math.random()<.5; e.style.left=left?"5vw":"65vw"; e.style.top=(8+Math.random()*72)+"vh";
+     e.style.setProperty("--from",left?"-55vw":"55vw"); e.style.setProperty("--to",left?"22vw":"-22vw");
+     e.style.setProperty("--rot",(-30+Math.random()*60)+"deg"); e.style.setProperty("--dur",(900+Math.random()*800)+"ms");
+     e.style.fontSize=(20+Math.random()*35)+"px"; e.style.color=colors[Math.floor(Math.random()*colors.length)];
+     stage.appendChild(e); setTimeout(()=>e.remove(),2000);
+   },i*85);
+ },delay);
+}
 function runShow(name){
  const main=mainFor(name), secondary=secondaryFor(name,main);
  // Mixing ratio varies every scan. Special five words sometimes get a pure 100% run.
@@ -330,13 +378,20 @@ function runShow(name){
      setTimeout(()=>e.remove(),2100);
    },d));
  }
- [900,2800,4800].forEach((d,i)=>{
-   let burstWord=(exactHikari && i%2===1) ? (Math.random()<.5?"💉":"LOVE❤️") : main;
+ // Radial burst is now only one of several possible accents, not the default.
+ if(Math.random()<.42){
+   const d=900+Math.random()*4300;
+   let burstWord=main;
+   if(exactHikari && Math.random()<.45) burstWord=Math.random()<.5?"💉":"LOVE❤️";
    if(main==="整形" && Math.random()<.35) burstWord=["目","鼻","顎","乳"][Math.floor(Math.random()*4)];
    if(main==="腹減った" && Math.random()<.35) burstWord=["寿司","焼肉","ステーキ","天ぷら"][Math.floor(Math.random()*4)];
    if((main==="裏引き"||main==="枕") && Math.random()<.22) burstWord=Math.random()<.5?"金ヅル":"色恋";
    radialBurst(burstWord,d);
- });
+ }
+ const fxPool=[barrageFx,rainFx,sideFx];
+ fxPool.sort(()=>Math.random()-.5);
+ const fxN=2+(Math.random()<.35?1:0);
+ for(let k=0;k<fxN;k++) fxPool[k](main,500+Math.random()*5000);
  const count=mode===1?52:38+Math.floor(Math.random()*18);
  for(let i=0;i<count;i++){
    let word;
@@ -354,7 +409,8 @@ function runShow(name){
    addItem(word,mode,Math.random()*5600,1800+Math.random()*3000);
  }
  // extra escalating center words
- for(let i=0;i<6;i++){
+ const centerAccentCount=1+Math.floor(Math.random()*3);
+ for(let i=0;i<centerAccentCount;i++){
    setTimeout(()=>{
      if(normalizeName(name)==="まり"){
        fireworksAt(innerWidth*(.28+Math.random()*.44),innerHeight*(.28+Math.random()*.40));
