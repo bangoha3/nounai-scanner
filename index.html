@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.8</title>
+<title>脳内スキャナー v3.8.1</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -247,17 +247,21 @@ function addTakashiPic(delay,imgSrc=TAKASHI_MARI_IMG){
 function runShow(name){
  const main=mainFor(name), secondary=secondaryFor(name,main);
  // Mixing ratio varies every scan. Special five words sometimes get a pure 100% run.
- const rawName=name.normalize("NFKC").trim(); const nn=normalizeName(name); const pure=(nn==="たかし"||nn==="まり"||nn==="まりあ"||nn==="みくも") || (hundredSet.has(main) && Math.random()<.32);
+ const rawName=name.normalize("NFKC").trim(); const nn=normalizeName(name); const pure=(rawName==="タカシ"||nn==="たかし"||nn==="まり"||nn==="まりあ"||nn==="みくも") || (hundredSet.has(main) && Math.random()<.32);
  const mainRatio=pure?1:(.58+Math.random()*.32); // 58–90% main
  const mode=Math.floor(Math.random()*4);
- const exactTakashi=name.normalize("NFKC").trim()==="たかし";
+ const exactTakashi=rawName==="たかし";
+ const exactKatakanaTakashi=rawName==="タカシ";
  if(exactTakashi){
-   [500,1700,2900,4100,5400,6700].forEach(addTakashiPic);
+   [500,1700,2900,4100,5400,6700].forEach(d=>addTakashiPic(d,TAKASHI_MARI_IMG));
+ }
+ if(exactKatakanaTakashi){
+   [500,1700,2900,4100,5400,6700].forEach(d=>addTakashiPic(d,TAKASHI_CHIKAGE_IMG));
  }
  const count=mode===1?52:38+Math.floor(Math.random()*18);
  for(let i=0;i<count;i++){
    let word;
-   if((nn!=="たかし"&&nn!=="まり"&&nn!=="まりあ"&&nn!=="みくも") && Math.random()<.12){
+   if((rawName!=="タカシ"&&nn!=="たかし"&&nn!=="まり"&&nn!=="まりあ"&&nn!=="みくも") && Math.random()<.12){
      word=smallSubs[Math.floor(Math.random()*smallSubs.length)];
    } else {
      word=Math.random()<mainRatio?main:secondary;
