@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.9</title>
+<title>脳内スキャナー v3.9.1</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -317,7 +317,7 @@ function runShow(name){
    // Vertical result: size primarily from available height so the full phrase stays visible.
    const nChars=[...finalText].length;
    // Use nearly the entire portrait screen while keeping every character visible.
-   finalWord.style.fontSize=(exactTakashi||exactKatakanaTakashi||exactKanjiTakashi) ? "min(70vw,42vh)" : `min(72vw, ${Math.max(12, Math.floor(82/nChars))}vh)`;
+   finalWord.style.fontSize=exactKanjiTakashi ? "min(56vw,34vh)" : (exactTakashi||exactKatakanaTakashi) ? "min(70vw,42vh)" : `min(72vw, ${Math.max(12, Math.floor(82/nChars))}vh)`;
    finalWord.style.animation="zoom 1.05s cubic-bezier(.1,.8,.2,1) both";
    if(normalizeName(name)==="まり"){
      setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.47),250);
