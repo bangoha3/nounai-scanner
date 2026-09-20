@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.14</title>
+<title>脳内スキャナー v3.15</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -72,6 +72,9 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 @keyframes dropFly{0%{transform:translateY(-18vh) rotate(var(--rot)) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(115vh) rotate(calc(var(--rot) + 120deg)) scale(1.15);opacity:0}}
 .sidePop{position:absolute;z-index:17;pointer-events:none;font-weight:1000;white-space:nowrap;animation:sidePopFly var(--dur) ease-out forwards}
 @keyframes sidePopFly{0%{transform:translateX(var(--from)) scale(.35) rotate(var(--rot));opacity:0}20%{opacity:1}65%{transform:translateX(0) scale(1.15) rotate(0deg);opacity:1}100%{transform:translateX(var(--to)) scale(.8);opacity:0}}
+
+#final.champagneFinal #finalWord{top:43%!important;max-height:66vh!important}
+#final.champagneFinal #again{z-index:80!important}
 </style>
 </head>
 <body>
@@ -105,6 +108,7 @@ function rng(seed){return()=>{seed=(seed+0x6D2B79F5)|0;let t=Math.imul(seed^seed
 function mainFor(name){
  const raw=name.normalize("NFKC").trim();
  const n=normalizeName(name);
+ if(raw.endsWith("❤️")||raw.endsWith("❤"))return "整形";
  if(raw==="ひかり"||raw==="ヒカリ")return "シャブ";
  if(raw==="高士")return "さくら";
  if(raw==="タカシ")return "千景";
@@ -202,14 +206,14 @@ function runChampagneShow(name){
  const chosen=champagneBrands[Math.floor(Math.random()*champagneBrands.length)];
  setTimeout(()=>{
    [...stage.querySelectorAll(".item,.spark")].forEach(x=>x.remove());
-   final.style.display="flex"; document.getElementById("again").style.display="block";
+   final.style.display="flex"; final.classList.add("champagneFinal"); document.getElementById("again").style.display="block";
    finalWord.textContent=chosen;
    finalWord.style.color=colors[Math.floor(Math.random()*colors.length)];
    const nChars=[...chosen].length;
    // Always make the final champagne brand as large as possible.
    // Short names such as P2/P3 become huge; long names still fit vertically.
-   const perChar=Math.max(16,Math.floor(90/nChars));
-   finalWord.style.fontSize=`min(82vw, ${perChar}vh)`;
+   const perChar=Math.max(12,Math.floor(66/nChars));
+   finalWord.style.fontSize=`min(72vw, ${perChar}vh)`;
    finalWord.style.animation="zoom 1.05s cubic-bezier(.1,.8,.2,1) both";
    fireworksAt(innerWidth*.5,innerHeight*.47);
    setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.47),420);
@@ -297,7 +301,7 @@ function radialBurst(word,delay){
 
 function accentWord(main){
  if(main==="整形"&&Math.random()<.42) return ["目","鼻","顎","乳"][Math.floor(Math.random()*4)];
- if(main==="腹減った"&&Math.random()<.42) return ["寿司","焼肉","ステーキ","天ぷら"][Math.floor(Math.random()*4)];
+ if(main==="腹減った"&&Math.random()<.42) return ["寿司","焼肉","ステーキ","天ぷら","ラーメン"][Math.floor(Math.random()*4)];
  if((main==="裏引き"||main==="枕")&&Math.random()<.25) return Math.random()<.5?"金ヅル":"色恋";
  return main;
 }
@@ -336,6 +340,7 @@ function sideFx(main,delay){
  },delay);
 }
 function runShow(name){
+ final.classList.remove("champagneFinal");
  const main=mainFor(name), secondary=secondaryFor(name,main);
  // Mixing ratio varies every scan. Special five words sometimes get a pure 100% run.
  const rawName=name.normalize("NFKC").trim(); const nn=normalizeName(name); const pure=(nn==="ひかり"||rawName==="高士"||rawName==="タカシ"||nn==="たかし"||nn==="まり"||nn==="まりあ"||nn==="みくも") || (hundredSet.has(main) && Math.random()<.32);
@@ -379,26 +384,26 @@ function runShow(name){
    },d));
  }
  // Radial burst is now only one of several possible accents, not the default.
- if(Math.random()<.42){
+ if(Math.random()<.18){
    const d=900+Math.random()*4300;
    let burstWord=main;
    if(exactHikari && Math.random()<.45) burstWord=Math.random()<.5?"💉":"LOVE❤️";
    if(main==="整形" && Math.random()<.35) burstWord=["目","鼻","顎","乳"][Math.floor(Math.random()*4)];
-   if(main==="腹減った" && Math.random()<.35) burstWord=["寿司","焼肉","ステーキ","天ぷら"][Math.floor(Math.random()*4)];
+   if(main==="腹減った" && Math.random()<.35) burstWord=["寿司","焼肉","ステーキ","天ぷら","ラーメン"][Math.floor(Math.random()*4)];
    if((main==="裏引き"||main==="枕") && Math.random()<.22) burstWord=Math.random()<.5?"金ヅル":"色恋";
    radialBurst(burstWord,d);
  }
  const fxPool=[barrageFx,rainFx,sideFx];
  fxPool.sort(()=>Math.random()-.5);
- const fxN=2+(Math.random()<.35?1:0);
- for(let k=0;k<fxN;k++) fxPool[k](main,500+Math.random()*5000);
+ const fxN=1+Math.floor(Math.random()*3);
+ for(let k=0;k<fxN;k++) fxPool[k](main,350+Math.random()*5400);
  const count=mode===1?52:38+Math.floor(Math.random()*18);
  for(let i=0;i<count;i++){
    let word;
    if(main==="整形" && Math.random()<.30){
      word=["目","鼻","顎","乳"][Math.floor(Math.random()*4)];
    } else if(main==="腹減った" && Math.random()<.30){
-     word=["寿司","焼肉","ステーキ","天ぷら"][Math.floor(Math.random()*4)];
+     word=["寿司","焼肉","ステーキ","天ぷら","ラーメン"][Math.floor(Math.random()*4)];
    } else if((main==="裏引き"||main==="枕") && Math.random()<.14){
      word=Math.random()<.5?"金ヅル":"色恋";
    } else if((nn!=="ひかり"&&rawName!=="高士"&&rawName!=="タカシ"&&nn!=="たかし"&&nn!=="まり"&&nn!=="まりあ"&&nn!=="みくも") && Math.random()<.12){
