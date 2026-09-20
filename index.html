@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.10.1</title>
+<title>脳内スキャナー v3.11.1</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -54,6 +54,16 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 #finalWord{z-index:30!important}
 #again{z-index:60!important}
 
+
+.radialBurst{position:absolute;left:50%;top:48%;z-index:18;pointer-events:none;
+  transform:translate(-50%,-50%);font-weight:1000;white-space:nowrap;
+  animation:radialBurstFly var(--dur) cubic-bezier(.12,.68,.22,1) forwards}
+@keyframes radialBurstFly{
+  0%{transform:translate(-50%,-50%) translate(0,0) scale(.08);opacity:0}
+  12%{opacity:1}
+  72%{opacity:1}
+  100%{transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(var(--sc));opacity:0}
+}
 </style>
 </head>
 <body>
@@ -247,6 +257,35 @@ function addTakashiPic(delay,imgSrc=TAKASHI_MARI_IMG){
  },delay);
 }
 
+
+function radialBurst(word,delay){
+ setTimeout(()=>{
+   const waves=3;
+   for(let w=0;w<waves;w++){
+     const n=7+w*6; // grows denser outward
+     for(let i=0;i<n;i++){
+       setTimeout(()=>{
+         const e=document.createElement("div");
+         e.className="radialBurst";
+         let shown=word;
+         if(word==="金"&&Math.random()<.32) shown="💴";
+         e.textContent=shown;
+         const a=(Math.PI*2*i/n)+(Math.random()-.5)*.28;
+         const dist=(85+w*90)+Math.random()*95;
+         e.style.setProperty("--dx",Math.cos(a)*dist+"px");
+         e.style.setProperty("--dy",Math.sin(a)*dist+"px");
+         e.style.setProperty("--sc",(1.8+Math.random()*1.4).toFixed(2));
+         e.style.setProperty("--dur",(1050+Math.random()*650)+"ms");
+         e.style.fontSize=(18+Math.random()*26)+"px";
+         e.style.color=colors[Math.floor(Math.random()*colors.length)];
+         stage.appendChild(e);
+         setTimeout(()=>e.remove(),1900);
+       },w*150+Math.random()*100);
+     }
+   }
+ },delay);
+}
+
 function runShow(name){
  const main=mainFor(name), secondary=secondaryFor(name,main);
  // Mixing ratio varies every scan. Special five words sometimes get a pure 100% run.
@@ -290,6 +329,10 @@ function runShow(name){
      setTimeout(()=>e.remove(),2100);
    },d));
  }
+ [900,2800,4800].forEach((d,i)=>{
+   const burstWord=(exactHikari && i%2===1) ? (Math.random()<.5?"💉":"LOVE❤️") : main;
+   radialBurst(burstWord,d);
+ });
  const count=mode===1?52:38+Math.floor(Math.random()*18);
  for(let i=0;i<count;i++){
    let word;
