@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.16</title>
+<title>脳内スキャナー v3.17</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -173,7 +173,7 @@ function addItem(word,mode,delay,duration){
 }
 
 function runChampagneShow(name){
- // Phase 1: unmistakable full-screen opening.
+ // Phase 1 stays fixed: opening title.
  const opener=document.createElement("div");
  opener.className="champagneOpen";
  opener.textContent="シャンパン🥂";
@@ -181,45 +181,51 @@ function runChampagneShow(name){
  setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
  setTimeout(()=>opener.remove(),2200);
 
- // Phase 2: champagne brands explode onto the screen.
+ // Phase 2 now uses the same varied FX family as the normal scanner.
+ // Pick a temporary champagne brand for each effect, so every run feels different.
+ const brand=()=>champagneBrands[Math.floor(Math.random()*champagneBrands.length)];
+ const fx=[
+   ()=>barrageFx(brand(),2300+Math.random()*3400),
+   ()=>rainFx(brand(),2300+Math.random()*3400),
+   ()=>sideFx(brand(),2300+Math.random()*3400)
+ ];
+ fx.sort(()=>Math.random()-.5);
+ const fxN=1+Math.floor(Math.random()*3);
+ for(let i=0;i<fxN;i++) fx[i]();
+
+ // Also keep the normal random text movement modes, but with varied brands.
  const modes=[0,1,2,3];
- champagneBrands.forEach((brand,i)=>{
+ const groups=3+Math.floor(Math.random()*4);
+ for(let g=0;g<groups;g++){
    setTimeout(()=>{
-     const burst=3+Math.floor(Math.random()*3);
-     for(let j=0;j<burst;j++){
-       setTimeout(()=>addItem(brand,modes[Math.floor(Math.random()*modes.length)],0,1900+Math.random()*1000),j*90);
+     const n=4+Math.floor(Math.random()*7);
+     for(let j=0;j<n;j++){
+       const b=brand();
+       addItem(b,modes[Math.floor(Math.random()*modes.length)],Math.random()*700,1300+Math.random()*1700);
      }
-     if(i%2===0)fireworksAt(innerWidth*(.25+Math.random()*.5),innerHeight*(.25+Math.random()*.5));
-   },2300+i*430);
- });
+   },2400+g*(550+Math.random()*500));
+ }
 
- // Add a final dense brand barrage.
- setTimeout(()=>{
-   for(let i=0;i<26;i++){
-     const brand=champagneBrands[Math.floor(Math.random()*champagneBrands.length)];
-     addItem(brand,modes[Math.floor(Math.random()*modes.length)],Math.random()*1700,1500+Math.random()*1300);
-   }
-   fireworksAt(innerWidth*.5,innerHeight*.48);
- },6100);
+ // Radial is deliberately rare, matching the normal animation balance.
+ if(Math.random()<.18) radialBurst(brand(),2800+Math.random()*3000);
 
- // Phase 3: one randomly selected brand as the giant vertical result.
- const chosen=champagneBrands[Math.floor(Math.random()*champagneBrands.length)];
+ // Occasional fireworks at random positions, not a fixed end barrage.
+ if(Math.random()<.55) setTimeout(()=>fireworksAt(innerWidth*(.2+Math.random()*.6),innerHeight*(.2+Math.random()*.55)),3300+Math.random()*2800);
+
+ // Phase 3 stays fixed: one random brand as the giant vertical result.
+ const chosen=brand();
  setTimeout(()=>{
-   [...stage.querySelectorAll(".item,.spark")].forEach(x=>x.remove());
+   [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst")].forEach(x=>x.remove());
    final.style.display="flex"; final.classList.add("champagneFinal"); document.getElementById("again").style.display="block";
    finalWord.textContent=chosen;
    finalWord.style.color=colors[Math.floor(Math.random()*colors.length)];
    const nChars=[...chosen].length;
-   // Always make the final champagne brand as large as possible.
-   // Short names such as P2/P3 become huge; long names still fit vertically.
    const perChar=Math.max(12,Math.floor(66/nChars));
    finalWord.style.fontSize=`min(72vw, ${perChar}vh)`;
    finalWord.style.animation="zoom 1.05s cubic-bezier(.1,.8,.2,1) both";
-   fireworksAt(innerWidth*.5,innerHeight*.47);
-   setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.47),420);
+   fireworksAt(innerWidth*.5,innerHeight*.42);
  },9000);
 }
-
 
 function finalTakashiFaces(imgSrc=TAKASHI_MARI_IMG){
  document.querySelectorAll(".finalFace").forEach(e=>e.remove());
