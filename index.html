@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.17</title>
+<title>脳内スキャナー v3.18</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -447,10 +447,11 @@ function runShow(name){
    if(exactTakashi) finalTakashiFaces(TAKASHI_MARI_IMG);
     if(exactKatakanaTakashi) finalTakashiFaces(TAKASHI_CHIKAGE_IMG);
     if(exactKanjiTakashi) finalTakashiFaces(TAKASHI_SAKURA_IMG);
-   finalWord.textContent=(nn==="みくも"?"ケーキ嫌い":main==="うどん"?"木屋うどん":main);
+   const udonFinal=(main==="うどん"?(Math.random()<.5?"木屋うどん":"うらら"):null);
+   finalWord.textContent=(nn==="みくも"?"ケーキ嫌い":udonFinal||main);
 
    finalWord.style.color=colors[Math.floor(Math.random()*colors.length)];
-   const finalText=(nn==="みくも"?"ケーキ嫌い":main==="うどん"?"木屋うどん":main);
+   const finalText=(nn==="みくも"?"ケーキ嫌い":udonFinal||main);
    // Vertical result: size primarily from available height so the full phrase stays visible.
    const nChars=[...finalText].length;
    // Use nearly the entire portrait screen while keeping every character visible.
