@@ -103,7 +103,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 </section>
 <script>
 const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金"]; const normal=["休み","太客","素飲み"]; const mains=[...strong,...normal];
-const subs=[...strong,...normal]; const smallSubs=["ヘアメ","黒服","並木通り"];
+const subs=[...strong,...normal]; const smallSubs=["ヘアメ","黒服","並木通り","銀座8丁目"];
 const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
 const sexPositions=["正常位","騎乗位","バック","立ちバック","座位","対面座位","背面座位","側位","寝バック","駅弁","松葉崩し","だいしゅきホールド","ロールスロイス"];
 const bagBrand={
@@ -446,12 +446,19 @@ function radialBurst(word,delay){
 
 
 function accentWord(main){
- if(main==="整形"&&Math.random()<.42) return ["目","鼻","顎","乳"][Math.floor(Math.random()*4)];
- if(main==="腹減った"&&Math.random()<.42) return ["寿司","焼肉","ステーキ","天ぷら","ラーメン"][Math.floor(Math.random()*4)];
- if((main==="裏引き"||main==="枕")&&Math.random()<.25) return Math.random()<.5?"金ヅル":"色恋";
- if(main==="ダルい"&&Math.random()<.42) return ["アフター","ゴルフ","枝","周年","イベント","休日店外","スノミ"][Math.floor(Math.random()*7)];
- if(main==="SEX"&&Math.random()<.42) return ["フェラ","バック"][Math.floor(Math.random()*2)];
- if(main==="罰金"&&Math.random()<.42) return ["同伴ノルマ","遅刻","飯無し","20時30分"][Math.floor(Math.random()*4)];
+ const scatter={
+  "酒":["シャンパン","ゲロ","🤮","ワイン","テキーラ","炭酸","ミネラルウォーター","ボトル","グラシャン","二日酔い","乾杯","記憶なし","ブラックアウト"],
+  "チンポ":["大きいの","デカいの","長持ち","早漏","長い","短い","極太","中折れ","遅漏","朝立ち","フル勃起","サイズ","テクニック"],
+  "ちんこ":["大きいの","デカいの","長持ち","早漏","長い","短い","極太","中折れ","遅漏","朝立ち","フル勃起","サイズ","テクニック"],
+  "金":["💴","ゴールド","タワマン","別荘","ロールスロイス","フェラーリ","株","債券","札束","億","ブラックカード","不動産","ビル","土地","パテック","AP","リシャール","プライベートジェット","クルーザー","家賃収入","配当","現金","ドル","💲","￥"],
+  "男":["チンポ","ちんこ","巨根","金","貢ぎ","プレゼント","セックス","イケメン","太客","本命","彼氏","パパ","金持ち","色恋","枕","同伴","アフター","ブランド品","バッグ","時計","マンション","旅行","指輪","現金","シャンパン"],
+  "うどん":["讃岐うどん","鍋焼きうどん","天ぷらうどん","ザルうどん","釜玉うどん","肉うどん","カレーうどん","きつねうどん","ぶっかけうどん","釜揚げうどん","月見うどん","かけうどん","冷やしうどん"],
+  "クスリ":["💉","LOVE❤️","キマる","飛ぶ","ハイ","覚醒","眠れない","朝まで","秘密","内緒","依存","沼","幻覚","合法？","記憶なし","テンションMAX","👀","🧠","💊"],
+  "裏引き":["太客","金ヅル","現金","秘密","㊙️","🤫","バレバレ","色恋","店外","温泉","旅行"]
+ };
+ if(main==="愛" || main==="ＬＯＶＥ" || main==="LOVE") return main;
+ const a=scatter[main];
+ if(a && a.length && Math.random()<0.42) return a[Math.floor(Math.random()*a.length)];
  return main;
 }
 function barrageFx(main,delay){
@@ -559,7 +566,7 @@ function runShow(name){
    } else if((nn!=="ひかり"&&rawName!=="高士"&&rawName!=="タカシ"&&nn!=="たかし"&&nn!=="まり"&&nn!=="まりあ"&&nn!=="みくも") && Math.random()<.12){
      word=smallSubs[Math.floor(Math.random()*smallSubs.length)];
    } else {
-     word=Math.random()<mainRatio?main:secondary;
+     word=Math.random()<mainRatio?accentWord(main):secondary;
    }
    addItem(word,mode,Math.random()*5600,1800+Math.random()*3000);
  }
