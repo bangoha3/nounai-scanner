@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.24</title>
+<title>脳内スキャナー v3.25</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -105,6 +105,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金"]; const normal=["休み","同伴ノルマ","太客"]; const mains=[...strong,...normal];
 const subs=[...strong,...normal]; const smallSubs=["20時30分","遅刻","ヘアメ","飯無し","周年"];
 const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
+const sexPositions=["正常位","騎乗位","バック","立ちバック","座位","対面座位","背面座位","側位","寝バック","駅弁","松葉崩し","だいしゅきホールド","ロールスロイス"];
 const bagBrand={
  "バーキン25":"HERMÈS","ケリー":"HERMÈS","ピコタン":"HERMÈS",
  "カプシーヌ":"LOUIS VUITTON",
@@ -270,6 +271,50 @@ function brandPictogram(brand,delay=0){
    e.style.setProperty("--dur",(1200+Math.random()*1100)+"ms");
    stage.appendChild(e); setTimeout(()=>e.remove(),2600);
  },delay);
+}
+
+
+function runSexShow(name){
+ const opener=document.createElement("div");
+ opener.className="champagneOpen";
+ opener.textContent="セックス";
+ stage.appendChild(opener);
+ setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
+ setTimeout(()=>opener.remove(),2200);
+
+ const item=()=>sexPositions[Math.floor(Math.random()*sexPositions.length)];
+ const fx=[
+   ()=>barrageFx(item(),2300+Math.random()*3400),
+   ()=>rainFx(item(),2300+Math.random()*3400),
+   ()=>sideFx(item(),2300+Math.random()*3400)
+ ];
+ fx.sort(()=>Math.random()-.5);
+ const fxN=1+Math.floor(Math.random()*3);
+ for(let i=0;i<fxN;i++) fx[i]();
+
+ const modes=[0,1,2,3];
+ const groups=3+Math.floor(Math.random()*4);
+ for(let g=0;g<groups;g++){
+   setTimeout(()=>{
+     const n=4+Math.floor(Math.random()*7);
+     for(let j=0;j<n;j++) addItem(item(),modes[Math.floor(Math.random()*modes.length)],Math.random()*700,1300+Math.random()*1700);
+   },2400+g*(550+Math.random()*500));
+ }
+ if(Math.random()<.18) radialBurst(item(),2800+Math.random()*3000);
+ if(Math.random()<.55) setTimeout(()=>fireworksAt(innerWidth*(.2+Math.random()*.6),innerHeight*(.2+Math.random()*.55)),3300+Math.random()*2800);
+
+ const chosen=item();
+ setTimeout(()=>{
+   [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict")].forEach(x=>x.remove());
+   final.style.display="flex"; final.classList.add("champagneFinal"); document.getElementById("again").style.display="block";
+   finalWord.textContent=chosen;
+   finalWord.style.color=colors[Math.floor(Math.random()*colors.length)];
+   const nChars=[...chosen].length;
+   const perChar=Math.max(10,Math.floor(66/nChars));
+   finalWord.style.fontSize=`min(72vw, ${perChar}vh)`;
+   finalWord.style.animation="zoom 1.05s cubic-bezier(.1,.8,.2,1) both";
+   fireworksAt(innerWidth*.5,innerHeight*.42);
+ },9000);
 }
 
 function runBagShow(name){
@@ -584,13 +629,15 @@ document.getElementById("start").onclick=async()=>{
  const specialName=normalizeName(name);
  if(specialName==="しゃんぱん") runChampagneShow(name);
  else if(specialName==="ばっく") runBagShow(name);
+ else if(specialName==="せっくす") runSexShow(name);
  else{
-   // Independent special draws: champagne 1/7, then bag 1/20.
-   // Champagne has priority if both would hit on the same scan.
+   // Independent special draws. Priority only matters if more than one hits together.
    const champagneHit=Math.random()<1/7;
    const bagHit=Math.random()<1/20;
+   const sexHit=Math.random()<1/15;
    if(champagneHit) runChampagneShow(name);
    else if(bagHit) runBagShow(name);
+   else if(sexHit) runSexShow(name);
    else runShow(name);
  }
 };
