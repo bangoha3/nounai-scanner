@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>脳内スキャナー v3.23</title>
+<title>脳内スキャナー v3.24</title>
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
 #setup{height:100%;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:28px;background:radial-gradient(circle at 50% 35%,#172038 0,#080b13 43%,#030407 100%)}
@@ -102,7 +102,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 <div id="final"><img id="takashiFinalPic" alt=""><small>最深層欲求</small><div id="finalWord"></div><button id="again">もう一度</button></div>
 </section>
 <script>
-const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX"]; const normal=["休み","同伴ノルマ","罰金","太客"]; const mains=[...strong,...normal];
+const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金"]; const normal=["休み","同伴ノルマ","太客"]; const mains=[...strong,...normal];
 const subs=[...strong,...normal]; const smallSubs=["20時30分","遅刻","ヘアメ","飯無し","周年"];
 const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
 const bagBrand={
@@ -406,6 +406,7 @@ function accentWord(main){
  if((main==="裏引き"||main==="枕")&&Math.random()<.25) return Math.random()<.5?"金ヅル":"色恋";
  if(main==="ダルい"&&Math.random()<.42) return ["アフター","ゴルフ","枝","周年","イベント","休日店外","スノミ"][Math.floor(Math.random()*7)];
  if(main==="SEX"&&Math.random()<.42) return ["フェラ","バック"][Math.floor(Math.random()*2)];
+ if(main==="罰金"&&Math.random()<.42) return ["同伴ノルマ","遅刻","飯無し","20時30分"][Math.floor(Math.random()*4)];
  return main;
 }
 function barrageFx(main,delay){
