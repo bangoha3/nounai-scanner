@@ -41,7 +41,7 @@ animation:faceIn .85s cubic-bezier(.15,.8,.2,1) both}
 @keyframes fall{0%{transform:translateY(-130vh) rotate(0)}100%{transform:translateY(130vh) rotate(360deg)}}
 @keyframes pulse{0%,100%{transform:scale(.7)}50%{transform:scale(1.5)}}
 .champagneOpen{position:absolute;inset:0;z-index:28;display:flex;align-items:center;justify-content:center;
-font-weight:1000;text-align:center;white-space:nowrap;font-size:min(17vw,13vh);letter-spacing:.02em;
+font-weight:1000;text-align:center;white-space:nowrap;font-size:min(14vw,11vh);letter-spacing:0;padding:0 3vw;box-sizing:border-box;
 background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:champOpen 1.1s ease both}
 @keyframes champOpen{0%{transform:scale(.35);opacity:0}65%{transform:scale(1.08);opacity:1}100%{transform:scale(1);opacity:1}}
 .spark{position:fixed;width:10px;height:10px;border-radius:50%;z-index:25;pointer-events:none;box-shadow:0 0 12px currentColor;animation:sparkOut .8s ease-out forwards}
@@ -102,7 +102,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 <div id="final"><img id="takashiFinalPic" alt=""><small>最深層欲求</small><div id="finalWord"></div><button id="again">もう一度</button></div>
 </section>
 <script>
-const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金"]; const normal=["休み","太客","素飲み"]; const mains=[...strong,...normal];
+const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金","太客"]; const normal=["休み","素飲み"]; const mains=[...strong,...normal];
 const subs=[...strong,...normal]; const smallSubs=["ヘアメ","黒服","並木通り","銀座8丁目"];
 const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
 const sexPositions=["正常位","騎乗位","バック","立ちバック","座位","対面座位","背面座位","側位","寝バック","駅弁","松葉崩し","だいしゅきホールド","ロールスロイス"];
@@ -311,8 +311,9 @@ function runSexShow(name){
    finalWord.textContent=chosen;
    finalWord.style.color=colors[Math.floor(Math.random()*colors.length)];
    const nChars=[...chosen].length;
-   const perChar=Math.max(10,Math.floor(66/nChars));
-   finalWord.style.fontSize=`min(72vw, ${perChar}vh)`;
+   const perChar=Math.max(9,Math.floor(54/nChars));
+   finalWord.style.fontSize=`min(60vw, ${perChar}vh)`;
+   finalWord.style.transform="translateY(-7vh)";
    finalWord.style.animation="zoom 1.05s cubic-bezier(.1,.8,.2,1) both";
    fireworksAt(innerWidth*.5,innerHeight*.42);
  },9000);
@@ -474,7 +475,8 @@ function accentWord(main){
  "腹減った":["寿司","焼肉","ステーキ","天ぷら","ラーメン","うなぎ","焼鳥","すき焼き","しゃぶしゃぶ","カレー","餃子","ハンバーグ","パスタ","ピザ","チャーハン","とんかつ","唐揚げ","牛丼","おにぎり","ケーキ","アイス","深夜メシ","〆ラーメン","大盛り","おかわり","Uber","飯テロ","炭水化物","肉🍖"],
  "ダルい":["アフター","ゴルフ","枝","周年","イベント","休日店外","スノミ","同伴","営業LINE","客電","早出","残業","ミーティング","二日酔い","連勤","出勤","ヘアメ","着替え","ノルマ","シャンパン営業","誕生日","ゴルフ同伴","休日LINE","長文LINE","返信","既読","未読","酔っ払い","説教","自慢話","延長","ラストまで","雨","月曜日","眠い","帰りたい","休みたい","めんどくさい","痛客"],
  "SEX":["フェラ","バック","ホテル","ラブホ","お泊まり","朝帰り","秘密","㊙️","🤫","ムラムラ","欲望","本能","誘惑","色気","相性","大人の時間","今夜","終電なし","延長戦","シャワー","ベッド","朝まで","LOVE❤️","ドキドキ","密会","二人きり"],
- "罰金":["同伴ノルマ","遅刻","飯無し","20時30分","当欠","無断欠勤","同伴不足","ノルマ未達","遅刻確定","寝坊","二日酔い","連絡なし","バックレ","シフト忘れ","罰金💸","給料天引き","マイナス","減給","始末書","黒服からLINE","ママから電話","店から着信","やらかした","また罰金","今月ピンチ","出勤忘れ","時計見て絶望","タクシー🚕","急げ💨"]
+ "罰金":["同伴ノルマ","遅刻","飯無し","20時30分","当欠","無断欠勤","同伴不足","ノルマ未達","遅刻確定","寝坊","二日酔い","連絡なし","バックレ","シフト忘れ","罰金💸","給料天引き","マイナス","減給","始末書","黒服からLINE","ママから電話","店から着信","やらかした","また罰金","今月ピンチ","出勤忘れ","時計見て絶望","タクシー🚕","急げ💨"],
+ "太客":["売上","同伴","シャンパン","ボトル","ドンペリ","サロン","ピンドン","グラシャン","タワー","プレゼント","ブランド品","バッグ","時計","現金","札束","💴","金ヅル","神客","エース","本指名","毎週","延長","アフター","店外","旅行","温泉","誕生日","周年","救世主","VIP","ブラックカード","金持ち","億","LOVE❤️","ATM","課金","養分","財布","諭吉","今月もお願い❤️","帰さない","逃がさない","売上確定"]
  };
  if(main==="愛"||main==="ＬＯＶＥ"||main==="LOVE")return main;
  const a=scatter[main];
