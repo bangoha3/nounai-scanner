@@ -102,7 +102,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 <div id="final"><img id="takashiFinalPic" alt=""><small>最深層欲求</small><div id="finalWord"></div><button id="again">もう一度</button></div>
 </section>
 <script>
-const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金","太客"]; const normal=["休み","素飲み"]; const mains=[...strong,...normal];
+const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金","太客","休み","素飲み"]; const normal=[]; const mains=[...strong,...normal];
 const subs=[...strong,...normal]; const smallSubs=["ヘアメ","黒服","並木通り","銀座8丁目"];
 const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
 const sexPositions=["正常位","騎乗位","バック","立ちバック","座位","対面座位","背面座位","側位","寝バック","駅弁","松葉崩し","だいしゅきホールド","ロールスロイス"];
@@ -141,7 +141,9 @@ function mainFor(name){
  if(n==="まり")return "ちんこ";
  if(n==="まりあ")return "金";
  if(n==="みくも")return "ケーキ";
- return mains[hash(n)%mains.length];
+ let resetGen=0;
+ try{resetGen=parseInt(localStorage.getItem("nounaiResetGen")||"0",10)||0}catch(e){}
+ return mains[hash(n+"#"+resetGen)%mains.length];
 }
 function secondaryFor(name,main){let r=rng(hash(name)^0x9e3779b9);let a=subs.filter(x=>x!==main);return a[Math.floor(r()*a.length)]}
 function pict(word){
@@ -476,7 +478,9 @@ function accentWord(main){
  "ダルい":["アフター","ゴルフ","枝","周年","イベント","休日店外","スノミ","同伴","営業LINE","客電","早出","残業","ミーティング","二日酔い","連勤","出勤","ヘアメ","着替え","ノルマ","シャンパン営業","誕生日","ゴルフ同伴","休日LINE","長文LINE","返信","既読","未読","酔っ払い","説教","自慢話","延長","ラストまで","雨","月曜日","眠い","帰りたい","休みたい","めんどくさい","痛客"],
  "SEX":["フェラ","バック","ホテル","ラブホ","お泊まり","朝帰り","秘密","㊙️","🤫","ムラムラ","欲望","本能","誘惑","色気","相性","大人の時間","今夜","終電なし","延長戦","シャワー","ベッド","朝まで","LOVE❤️","ドキドキ","密会","二人きり"],
  "罰金":["同伴ノルマ","遅刻","飯無し","20時30分","当欠","無断欠勤","同伴不足","ノルマ未達","遅刻確定","寝坊","二日酔い","連絡なし","バックレ","シフト忘れ","罰金💸","給料天引き","マイナス","減給","始末書","黒服からLINE","ママから電話","店から着信","やらかした","また罰金","今月ピンチ","出勤忘れ","時計見て絶望","タクシー🚕","急げ💨"],
- "太客":["売上","同伴","シャンパン","ボトル","ドンペリ","サロン","ピンドン","グラシャン","タワー","プレゼント","ブランド品","バッグ","時計","現金","札束","💴","金ヅル","神客","エース","本指名","毎週","延長","アフター","店外","旅行","温泉","誕生日","周年","救世主","VIP","ブラックカード","金持ち","億","LOVE❤️","ATM","課金","養分","財布","諭吉","今月もお願い❤️","帰さない","逃がさない","売上確定"]
+ "太客":["売上","同伴","シャンパン","ボトル","ドンペリ","サロン","ピンドン","グラシャン","タワー","プレゼント","ブランド品","バッグ","時計","現金","札束","💴","金ヅル","神客","エース","本指名","毎週","延長","アフター","店外","旅行","温泉","誕生日","周年","救世主","VIP","ブラックカード","金持ち","億","LOVE❤️","ATM","課金","養分","財布","諭吉","今月もお願い❤️","帰さない","逃がさない","売上確定"],
+ "休み":["寝る","爆睡","二度寝","昼まで寝る","ゴロゴロ","引きこもり","Netflix","YouTube","ゲーム","スマホ","旅行","温泉","サウナ","エステ","マッサージ","美容院","買い物","ショッピング","カフェ","ランチ","焼肉","寿司","ラーメン","Uber","酒","昼飲み","二日酔い","犬","猫","推し活","デート","彼氏","友達","実家","何もしない","予定なし","一人になりたい","LINE無視","既読スルー","営業LINEしない","客電無視","店からの電話無視","黒服無視","ママ無視","同伴なし","アフターなし","化粧しない","すっぴん","パジャマ","ベッド","布団","現実逃避","明日も休みたい","出勤したくない","働きたくない"],
+ "素飲み":["ビール","ハイボール","焼酎","ワイン","水割り","ロック","乾杯","おかわり","もう一杯","ボトル","氷","炭酸","チェイサー","つまみ","枝豆","酔っ払い","ほろ酔い","ベロベロ","二日酔い","記憶なし","長居","延長なし","シャンパンなし","ボトル入らない","同伴なし","アフターなし","売上ゼロ","バックなし","ただ酒","暇つぶし","話だけ","説教","自慢話","昔話","武勇伝","同じ話","カラオケ","終電","居座る","帰らない","まだ飲む","閉店まで","水だけ","安上がり","コスパ","飲み放題","ノー課金","財布開かない","会計まだ？","今日も素飲み"]
  };
  if(main==="愛"||main==="ＬＯＶＥ"||main==="LOVE")return main;
  const a=scatter[main];
@@ -672,8 +676,33 @@ function runShow(name){
    if(navigator.vibrate) navigator.vibrate([80,50,120]);
  },9000);
 }
+
+function runReset(){
+ let g=0;
+ try{
+   g=(parseInt(localStorage.getItem("nounaiResetGen")||"0",10)||0)+1;
+   localStorage.setItem("nounaiResetGen",String(g));
+ }catch(e){}
+ setup.style.display="none";
+ stage.style.display="block";
+ final.style.display="none";
+ [...stage.querySelectorAll(".resetMessage")].forEach(x=>x.remove());
+ const msg=document.createElement("div");
+ msg.className="resetMessage";
+ msg.textContent="リセットされました";
+ msg.style.cssText="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:100;font-size:min(10vw,54px);font-weight:1000;white-space:nowrap;text-align:center;";
+ stage.appendChild(msg);
+ setTimeout(()=>{
+   msg.remove();
+   stage.style.display="none";
+   setup.style.display="flex";
+   document.getElementById("name").value="";
+ },1800);
+}
 document.getElementById("start").onclick=async()=>{
- const name=document.getElementById("name").value.trim()||"名無し";
+ const typed=document.getElementById("name").value.trim();
+ if(typed==="り"){ runReset(); return; }
+ const name=typed||"名無し";
  setup.style.display="none";stage.style.display="block";final.style.display="none";
  document.getElementById("takashiFinalPic").style.display="none"; document.querySelectorAll(".finalFace").forEach(e=>e.remove());
  try{if(stage.requestFullscreen)await stage.requestFullscreen()}catch(e){}
