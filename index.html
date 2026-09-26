@@ -55,6 +55,21 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 #again{z-index:60!important}
 
 
+
+.mainFireworkLaunch{
+  position:absolute;left:50%;bottom:-8vh;z-index:24;pointer-events:none;
+  transform:translateX(-50%) scale(.72);
+  font-weight:1000;white-space:nowrap;
+  text-shadow:0 0 10px currentColor,0 0 24px currentColor;
+  animation:mainFireworkRise .92s cubic-bezier(.18,.72,.28,1) forwards;
+}
+@keyframes mainFireworkRise{
+  0%{bottom:-8vh;opacity:0;transform:translateX(-50%) scale(.58)}
+  12%{opacity:1}
+  82%{opacity:1}
+  100%{bottom:57vh;opacity:0;transform:translateX(-50%) scale(1.18)}
+}
+
 .radialBurst{position:absolute;left:50%;top:48%;z-index:18;pointer-events:none;
   transform:translate(-50%,-50%);font-weight:1000;white-space:nowrap;
   animation:radialBurstFly var(--dur) cubic-bezier(.12,.68,.22,1) forwards}
@@ -221,7 +236,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.52</div>
+  <div class="versionMark">VERSION 3.54</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -559,6 +574,20 @@ function addTakashiPic(delay,imgSrc=TAKASHI_MARI_IMG){
 }
 
 
+
+function mainKeywordFirework(word,delay){
+ setTimeout(()=>{
+   const e=document.createElement("div");
+   e.className="mainFireworkLaunch";
+   e.textContent=word;
+   e.style.color=colors[Math.floor(Math.random()*colors.length)];
+   e.style.fontSize=(30+Math.random()*12)+"px";
+   stage.appendChild(e);
+   setTimeout(()=>e.remove(),1100);
+ },delay);
+ setTimeout(()=>radialBurst(word,0),delay+880);
+}
+
 function radialBurst(word,delay){
  setTimeout(()=>{
    const waves=3;
@@ -714,6 +743,8 @@ function runShow(name){
      setTimeout(()=>e.remove(),2100);
    },d));
  }
+ // Main keyword launches once like a firework and bursts slightly above center.
+ if(Math.random()<0.10) mainKeywordFirework(main,2300+Math.random()*1800);
  // Radial burst is now only one of several possible accents, not the default.
  if(Math.random()<.18){
    const d=900+Math.random()*4300;
@@ -781,7 +812,14 @@ function runShow(name){
    // Vertical result: size primarily from available height so the full phrase stays visible.
    const nChars=[...finalText].length;
    // Use nearly the entire portrait screen while keeping every character visible.
-   finalWord.style.fontSize=exactKanjiTakashi ? "min(56vw,34vh)" : (exactTakashi||exactKatakanaTakashi) ? "min(70vw,42vh)" : `min(72vw, ${Math.max(12, Math.floor(82/nChars))}vh)`;
+   finalWord.style.fontSize=(main==="SEX") ? "min(58vw,23vh)" : (exactKanjiTakashi ? "min(56vw,34vh)" : (exactTakashi||exactKatakanaTakashi) ? "min(70vw,42vh)" : `min(72vw, ${Math.max(12, Math.floor(82/nChars))}vh)`);
+   if(main==="SEX"){
+     finalWord.style.top="43%";
+     finalWord.style.maxHeight="64vh";
+   }else{
+     finalWord.style.top="";
+     finalWord.style.maxHeight="";
+   }
    finalWord.style.animation="zoom 1.05s cubic-bezier(.1,.8,.2,1) both";
 
    // 整形だけ、最終結果の下に「有 / 無」を50:50で必ず表示
