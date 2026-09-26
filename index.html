@@ -103,6 +103,12 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
  20%{opacity:1}
  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),calc(-50% + var(--dy,0px))) scale(var(--sc,2.1)) rotate(var(--r2,12deg))}
 }
+
+.kwFountain{position:absolute;left:50%;bottom:-4vh;z-index:25;pointer-events:none;font-weight:1000;white-space:nowrap;text-shadow:0 0 10px currentColor,0 0 22px currentColor;animation:kwFountainFly 1.35s cubic-bezier(.15,.72,.22,1) forwards}
+@keyframes kwFountainFly{0%{opacity:0;transform:translate(-50%,0) scale(.45)}10%{opacity:1}72%{opacity:1}100%{opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--fr)) scale(1.05)}}
+.kwTakeover{position:absolute;left:50%;bottom:-10vh;z-index:35;pointer-events:none;font-weight:1000;white-space:nowrap;text-shadow:0 0 14px currentColor,0 0 30px currentColor;animation:kwTakeoverRise 7.1s cubic-bezier(.16,.72,.2,1) forwards}
+@keyframes kwTakeoverRise{0%{bottom:-10vh;opacity:0;transform:translateX(-50%) scale(.32)}12%{opacity:1}38%{bottom:48vh;opacity:1;transform:translateX(-50%) scale(1)}72%{bottom:48vh;opacity:1;transform:translateX(-50%) scale(3.4)}92%{bottom:48vh;opacity:1;transform:translateX(-50%) scale(5.8)}100%{bottom:48vh;opacity:0;transform:translateX(-50%) scale(6.5)}}
+
 </style>
 
 <style id="launch-v346">
@@ -236,7 +242,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.54</div>
+  <div class="versionMark">VERSION 3.57</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -575,6 +581,29 @@ function addTakashiPic(delay,imgSrc=TAKASHI_MARI_IMG){
 
 
 
+
+function mainKeywordFountain(word,delay=0){
+ setTimeout(()=>{
+   for(let i=0;i<10;i++) setTimeout(()=>{
+     const e=document.createElement("div"); e.className="kwFountain"; e.textContent=word;
+     e.style.color=colors[Math.floor(Math.random()*colors.length)];
+     e.style.fontSize=(22+Math.random()*14)+"px";
+     e.style.setProperty("--fx",(-44+Math.random()*88)+"vw");
+     e.style.setProperty("--fy",-(30+Math.random()*48)+"vh");
+     e.style.setProperty("--fr",(-30+Math.random()*60)+"deg");
+     stage.appendChild(e); setTimeout(()=>e.remove(),1500);
+   },i*65);
+ },delay);
+}
+function mainKeywordTakeover(word,delay=0){
+ setTimeout(()=>{
+   const e=document.createElement("div"); e.className="kwTakeover"; e.textContent=word;
+   e.style.color=colors[Math.floor(Math.random()*colors.length)];
+   e.style.fontSize="clamp(34px,11vw,62px)";
+   stage.appendChild(e); setTimeout(()=>e.remove(),7300);
+ },delay);
+}
+
 function mainKeywordFirework(word,delay){
  setTimeout(()=>{
    const e=document.createElement("div");
@@ -677,6 +706,7 @@ function sideFx(main,delay){
  },delay);
 }
 function runShow(name){
+ document.querySelectorAll(".seikeiJudge").forEach(e=>e.remove());
  final.classList.remove("champagneFinal");
  const enteredRaw=name.normalize("NFKC").trim();
  const customerMaria=(enteredRaw==="太客")||(enteredRaw==="お客様"&&Math.random()<.5);
@@ -743,8 +773,12 @@ function runShow(name){
      setTimeout(()=>e.remove(),2100);
    },d));
  }
+ const mainOnlyTakeover=(Math.random()<1/30);
+ if(mainOnlyTakeover) mainKeywordTakeover(main,650);
+ if(!mainOnlyTakeover){
  // Main keyword launches once like a firework and bursts slightly above center.
  if(Math.random()<0.10) mainKeywordFirework(main,2300+Math.random()*1800);
+ if(Math.random()<0.06) mainKeywordFountain(main,1700+Math.random()*2200);
  // Radial burst is now only one of several possible accents, not the default.
  if(Math.random()<.18){
    const d=900+Math.random()*4300;
@@ -791,6 +825,7 @@ function runShow(name){
      e.style.transform="translate(-50%,-50%)";e.style.animation="pop .45s both";stage.appendChild(e);
      setTimeout(()=>e.remove(),650);
    },5900+i*480);
+ }
  }
  setTimeout(()=>{
    [...stage.querySelectorAll(".item")].forEach(x=>x.remove());
@@ -891,5 +926,22 @@ document.getElementById("again").onclick=()=>{
  final.style.display="none";stage.style.display="none";setup.style.display="flex";
  try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}
 };
+</script>
+
+<script>
+(()=>{
+ const SUB_SMALL=new Set(["並木通り","銀座8丁目","銀座ＳＩＸ","銀座三越","ポルシェビル","銀座会館"]);
+ const obs=new MutationObserver(ms=>{
+   for(const m of ms) for(const n of m.addedNodes){
+     if(n.nodeType===1 && SUB_SMALL.has((n.textContent||"").trim())){
+       n.style.fontSize="clamp(12px,3.4vw,18px)";
+       n.style.fontWeight="600";
+       n.style.opacity=".72";
+     }
+   }
+ });
+ const begin=()=>{const st=document.getElementById("stage"); if(st) obs.observe(st,{childList:true,subtree:true});};
+ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",begin); else begin();
+})();
 </script>
 </body></html>
