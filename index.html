@@ -242,13 +242,22 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.59</div>
+  <div class="versionMark">VERSION 3.60</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
 <div id="final"><img id="takashiFinalPic" alt=""><small>最深層欲求</small><div id="finalWord"></div><button id="again">もう一度</button></div>
 </section>
 <script>
+const CHINPO_PICT_V360="data:image/webp;base64,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";
+function chinpoPictV360(){
+ const e=document.createElement("img");
+ e.src=CHINPO_PICT_V360;
+ e.style.cssText="position:absolute;z-index:16;width:clamp(55px,18vw,105px);height:auto;left:"+(7+Math.random()*74)+"vw;top:"+(10+Math.random()*68)+"vh;opacity:.92;pointer-events:none;";
+ stage.appendChild(e);
+ setTimeout(()=>e.remove(),1900);
+}
+
 const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金","太客","休み","素飲み"]; const normal=[]; const mains=[...strong,...normal];
 const subs=[...strong,...normal]; const smallSubs=["並木通り","銀座8丁目","銀座ＳＩＸ","銀座三越","ポルシェビル","銀座会館"];
 const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
@@ -296,6 +305,7 @@ function secondaryFor(name,main){let r=rng(hash(name)^0x9e3779b9);let a=subs.fil
 function pict(word){
  if(word==="金") return Math.random()<.38 ? "💴" : "金";
  if(word==="チンポ"||word==="ちんこ"){
+ chinpoPictV360();
    if(Math.random()<.42) return '<span class="phallic"><i></i><b></b></span>';
  }
  return word;
