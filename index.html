@@ -122,6 +122,15 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 .newChinpoPict .pL{left:0}.newChinpoPict .pR{right:0}
 
 .brandPict{display:none!important}
+
+.newPhallic{display:inline-block;position:relative;width:1.05em;height:1.55em;vertical-align:middle;filter:drop-shadow(0 0 .13em currentColor)}
+.newPhallic i{position:absolute;display:block;background:currentColor}
+.newPhallic .pHead{width:.62em;height:.62em;border-radius:50%;left:.215em;top:0}
+.newPhallic .pShaft{width:.62em;height:1.02em;border-radius:.30em .30em .13em .13em;left:.215em;top:.34em}
+.newPhallic .pBall{width:.60em;height:.60em;border-radius:50%;bottom:0}
+.newPhallic .pL{left:0}.newPhallic .pR{right:0}
+.phallic{display:none!important}
+
 </style>
 
 <style id="launch-v346">
@@ -255,7 +264,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.66</div>
+  <div class="versionMark">VERSION 3.67</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -323,7 +332,7 @@ function secondaryFor(name,main){let r=rng(hash(name)^0x9e3779b9);let a=subs.fil
 function pict(word){
  if(word==="金") return Math.random()<.38 ? "💴" : "金";
  if(word==="チンポ"||word==="ちんこ"){
-   if(Math.random()<.42) return '<span class="phallic"><i></i><b></b></span>';
+   if(Math.random()<.42) return '<span class="newPhallic"><i class="pHead"></i><i class="pShaft"></i><i class="pBall pL"></i><i class="pBall pR"></i></span>';
  }
  return word;
 }
@@ -810,12 +819,7 @@ function runShow(name){
  }
  const mainOnlyTakeover=(Math.random()<1/30);
 
- if((main==="チンポ"||main==="ちんこ") && !mainOnlyTakeover){
-   const pictCount=2+Math.floor(Math.random()*3);
-   for(let i=0;i<pictCount;i++){
-     const t=900+Math.random()*6200;
-     setTimeout(()=>{ if(final.style.display!=="flex") chinpoPictV360(); },t);
-   }
+ 
  }
  if(mainOnlyTakeover) mainKeywordTakeover(main,650);
  if(!mainOnlyTakeover){
