@@ -121,6 +121,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 .newChinpoPict .pBall{width:42px;height:42px;border-radius:50%;bottom:0}
 .newChinpoPict .pL{left:0}.newChinpoPict .pR{right:0}
 
+.brandPict{display:none!important}
 </style>
 
 <style id="launch-v346">
@@ -254,7 +255,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.63</div>
+  <div class="versionMark">VERSION 3.64</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -322,7 +323,6 @@ function secondaryFor(name,main){let r=rng(hash(name)^0x9e3779b9);let a=subs.fil
 function pict(word){
  if(word==="金") return Math.random()<.38 ? "💴" : "金";
  if(word==="チンポ"||word==="ちんこ"){
- chinpoPictV360();
    if(Math.random()<.42) return '<span class="phallic"><i></i><b></b></span>';
  }
  return word;
@@ -627,11 +627,16 @@ function mainKeywordFountain(word,delay=0){
 }
 function mainKeywordTakeover(word,delay=0){
  setTimeout(()=>{
-   const e=document.createElement("div"); e.className="kwTakeover"; e.textContent=word;
+   const e=document.createElement("div");
+   e.className="kwTakeover"; e.textContent=word;
    e.style.color=colors[Math.floor(Math.random()*colors.length)];
    e.style.fontSize="clamp(34px,11vw,62px)";
-   stage.appendChild(e); setTimeout(()=>e.remove(),7300);
+   stage.appendChild(e);
+   setTimeout(()=>e.remove(),7300);
  },delay);
+ // 演出終盤：主キーワードが放射状にバンと飛び散ってから最終縦表示へ
+ setTimeout(()=>radialBurst(word,0),delay+5850);
+ setTimeout(()=>radialBurst(word,0),delay+6450);
 }
 
 function mainKeywordFirework(word,delay){
@@ -804,6 +809,14 @@ function runShow(name){
    },d));
  }
  const mainOnlyTakeover=(Math.random()<1/30);
+
+ if((main==="チンポ"||main==="ちんこ") && !mainOnlyTakeover){
+   const pictCount=2+Math.floor(Math.random()*3);
+   for(let i=0;i<pictCount;i++){
+     const t=900+Math.random()*6200;
+     setTimeout(()=>{ if(final.style.display!=="flex") chinpoPictV360(); },t);
+   }
+ }
  if(mainOnlyTakeover) mainKeywordTakeover(main,650);
  if(!mainOnlyTakeover){
  // Main keyword launches once like a firework and bursts slightly above center.
