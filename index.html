@@ -29,11 +29,12 @@ animation:faceIn .85s cubic-bezier(.15,.8,.2,1) both}
 #finalWord{position:absolute!important;left:50%;top:46%;transform:translate(-50%,-50%);z-index:10;font-weight:1000;text-align:center;line-height:.86;writing-mode:vertical-rl;text-orientation:upright;max-width:92vw;max-height:72vh;white-space:nowrap;overflow:visible;padding:0;transform-origin:center center}
 #again{position:absolute;bottom:max(28px,env(safe-area-inset-bottom));font-size:16px;padding:13px 22px;opacity:.85;white-space:nowrap}
 .moneyIcon{font-size:1.15em}
-.phallic{display:inline-flex;align-items:center;position:relative;width:1.75em;height:.82em;vertical-align:middle}
-.phallic:before{content:"";position:absolute;left:.42em;top:.25em;width:1.02em;height:.34em;border-radius:.18em;background:currentColor}
-.phallic:after{content:"";position:absolute;right:.08em;top:.18em;width:.46em;height:.48em;border-radius:50%;background:transparent;border:.12em solid currentColor}
-.phallic i,.phallic b{position:absolute;left:.03em;top:.35em;width:.50em;height:.50em;border-radius:50%;background:currentColor}
-.phallic b{left:.34em}
+.phallic{display:inline-flex;align-items:center;position:relative;width:1.05em;height:1.55em;vertical-align:middle}
+.phallic:before{content:"";position:absolute;left:.215em;top:.30em;width:.62em;height:1.02em;border-radius:.30em .30em .13em .13em;background:currentColor}
+.phallic:after{content:"";position:absolute;left:.215em;top:0;width:.62em;height:.62em;border-radius:50%;background:currentColor}
+.phallic i,.phallic b{position:absolute;bottom:0;width:.60em;height:.60em;border-radius:50%;background:currentColor}
+.phallic i{left:0}
+.phallic b{right:0}
 @keyframes pop{0%{transform:scale(.05) rotate(-20deg);opacity:0}60%{opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
 @keyframes zoom{0%{transform:translate(-50%,-50%) scale(.08);opacity:.15}70%{transform:translate(-50%,-50%) scale(1.12);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
 @keyframes flyL{0%{transform:translateX(-85vw) rotate(-25deg)}100%{transform:translateX(85vw) rotate(25deg)}}
@@ -255,7 +256,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.68</div>
+  <div class="versionMark">VERSION 3.69</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -810,13 +811,6 @@ function runShow(name){
  }
  const mainOnlyTakeover=(Math.random()<1/30);
 
- if((main==="チンポ"||main==="ちんこ") && !mainOnlyTakeover){
-   const pictCount=2+Math.floor(Math.random()*3);
-   for(let i=0;i<pictCount;i++){
-     const t=900+Math.random()*6200;
-     setTimeout(()=>{ if(final.style.display!=="flex") chinpoPictV360(); },t);
-   }
- }
  if(mainOnlyTakeover) mainKeywordTakeover(main,650);
  if(!mainOnlyTakeover){
  // Main keyword launches once like a firework and bursts slightly above center.
