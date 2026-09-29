@@ -256,7 +256,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.69</div>
+  <div class="versionMark">VERSION 3.70</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -375,46 +375,60 @@ function addItem(word,mode,delay,duration){
 }
 
 function runChampagneShow(name){
- // Phase 1 stays fixed: opening title.
  const opener=document.createElement("div");
  opener.className="champagneOpen";
  opener.textContent="シャンパン🥂";
  stage.appendChild(opener);
- setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
- setTimeout(()=>opener.remove(),2200);
 
- // Phase 2 now uses the same varied FX family as the normal scanner.
- // Pick a temporary champagne brand for each effect, so every run feels different.
  const brand=()=>champagneBrands[Math.floor(Math.random()*champagneBrands.length)];
- const fx=[
-   ()=>barrageFx(brand(),2300+Math.random()*3400),
-   ()=>rainFx(brand(),2300+Math.random()*3400),
-   ()=>sideFx(brand(),2300+Math.random()*3400)
- ];
- fx.sort(()=>Math.random()-.5);
- const fxN=1+Math.floor(Math.random()*3);
- for(let i=0;i<fxN;i++) fx[i]();
+ const mode=Math.floor(Math.random()*7);
 
- // Also keep the normal random text movement modes, but with varied brands.
- const modes=[0,1,2,3];
- const groups=3+Math.floor(Math.random()*4);
- for(let g=0;g<groups;g++){
-   setTimeout(()=>{
-     const n=4+Math.floor(Math.random()*7);
-     for(let j=0;j<n;j++){
-       const b=brand();
-       addItem(b,modes[Math.floor(Math.random()*modes.length)],Math.random()*700,1300+Math.random()*1700);
-     }
-   },2400+g*(550+Math.random()*500));
+ // 冒頭も毎回少し変える
+ if(mode===0||mode===4) setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
+ if(mode===1) setTimeout(()=>fireworksAt(innerWidth*.28,innerHeight*.42),500);
+ if(mode===2) setTimeout(()=>fireworksAt(innerWidth*.72,innerHeight*.38),850);
+ setTimeout(()=>opener.remove(),1900+Math.random()*500);
+
+ if(mode===0){
+   // 弾幕中心
+   barrageFx(brand(),2100); barrageFx(brand(),3900); barrageFx(brand(),5600);
+ }else if(mode===1){
+   // 雨中心
+   rainFx(brand(),2100); rainFx(brand(),3600); rainFx(brand(),5200);
+ }else if(mode===2){
+   // 左右から飛び込み中心
+   sideFx(brand(),2100); sideFx(brand(),3400); sideFx(brand(),5000); sideFx(brand(),6200);
+ }else if(mode===3){
+   // 放射状を主役にする回
+   radialBurst(brand(),2300); radialBurst(brand(),4100); radialBurst(brand(),5900);
+ }else if(mode===4){
+   // 大小ランダムにポップ
+   for(let g=0;g<6;g++) setTimeout(()=>{
+     const n=3+Math.floor(Math.random()*5);
+     for(let j=0;j<n;j++) addItem(brand(),Math.floor(Math.random()*4),Math.random()*500,1100+Math.random()*1700);
+   },1900+g*850);
+ }else if(mode===5){
+   // 花火＋少数ブランド。余白のある派手さ
+   for(let i=0;i<5;i++) setTimeout(()=>{
+     fireworksAt(innerWidth*(.18+Math.random()*.64),innerHeight*(.18+Math.random()*.55));
+     addItem(brand(),3,100,1700);
+   },2000+i*1050);
+ }else{
+   // 完全ミックス
+   const fxs=[
+     ()=>barrageFx(brand(),0),
+     ()=>rainFx(brand(),0),
+     ()=>sideFx(brand(),0),
+     ()=>radialBurst(brand(),0),
+     ()=>{for(let j=0;j<5;j++)addItem(brand(),Math.floor(Math.random()*4),Math.random()*450,1200+Math.random()*1300);}
+   ];
+   for(let i=0;i<7;i++) setTimeout(()=>fxs[Math.floor(Math.random()*fxs.length)](),1900+i*(650+Math.random()*300));
  }
 
- // Radial is deliberately rare, matching the normal animation balance.
- if(Math.random()<.18) radialBurst(brand(),2800+Math.random()*3000);
+ // 終盤も毎回少し違うアクセント
+ if(Math.random()<.5) setTimeout(()=>fireworksAt(innerWidth*(.25+Math.random()*.5),innerHeight*(.25+Math.random()*.4)),6900);
+ if(Math.random()<.35) setTimeout(()=>radialBurst(brand(),0),7200);
 
- // Occasional fireworks at random positions, not a fixed end barrage.
- if(Math.random()<.55) setTimeout(()=>fireworksAt(innerWidth*(.2+Math.random()*.6),innerHeight*(.2+Math.random()*.55)),3300+Math.random()*2800);
-
- // Phase 3 stays fixed: one random brand as the giant vertical result.
  const chosen=brand();
  setTimeout(()=>{
    [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict")].forEach(x=>x.remove());
@@ -429,7 +443,6 @@ function runChampagneShow(name){
    fireworksAt(innerWidth*.5,innerHeight*.42);
  },9000);
 }
-
 
 function brandPictogram(brand,delay=0){
  setTimeout(()=>{
@@ -951,9 +964,9 @@ document.getElementById("start").onclick=async()=>{
  else if(specialName==="せっくす") runSexShow(name);
  else{
    // Independent special draws. Priority only matters if more than one hits together.
-   const champagneHit=Math.random()<1/7;
+   const champagneHit=Math.random()<1/10;
    const bagHit=Math.random()<1/20;
-   const sexHit=Math.random()<1/15;
+   const sexHit=Math.random()<1/20;
    if(champagneHit) runChampagneShow(name);
    else if(bagHit) runBagShow(name);
    else if(sexHit) runSexShow(name);
