@@ -256,7 +256,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.74</div>
+  <div class="versionMark">VERSION 3.75</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -375,6 +375,10 @@ function addItem(word,mode,delay,duration){
 }
 
 function runChampagneShow(name){
+ // 連続プレイ時に前回の演出DOMが溜まらないよう毎回掃除
+ [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict,.champagneOpen")].forEach(x=>x.remove());
+ stage.style.display="block";
+
  const opener=document.createElement("div");
  opener.className="champagneOpen";
  opener.textContent="シャンパン🥂";
@@ -418,7 +422,7 @@ function runChampagneShow(name){
    },9000);
    return;
  }
- const mode=Math.floor(Math.random()*8);
+ const mode=Math.random()<.30?6:[0,1,2,3,4,5,7][Math.floor(Math.random()*7)];
 
  // 冒頭も毎回少し変える
  if(mode===0||mode===4) setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
@@ -428,20 +432,20 @@ function runChampagneShow(name){
 
  if(mode===0){
    // 弾幕中心
-   barrageFx(brand(),1800); barrageFx(brand(),2900); barrageFx(brand(),4000); barrageFx(brand(),5100); barrageFx(brand(),6200);
+   barrageFx(brand(),1600); barrageFx(brand(),2350); barrageFx(brand(),3100); barrageFx(brand(),3850); barrageFx(brand(),4600); barrageFx(brand(),5350); barrageFx(brand(),6100); barrageFx(brand(),6850);
  }else if(mode===1){
    // 雨中心
-   rainFx(brand(),1800); rainFx(brand(),2850); rainFx(brand(),3900); rainFx(brand(),4950); rainFx(brand(),6000);
+   rainFx(brand(),1600); rainFx(brand(),2350); rainFx(brand(),3100); rainFx(brand(),3850); rainFx(brand(),4600); rainFx(brand(),5350); rainFx(brand(),6100); rainFx(brand(),6850);
  }else if(mode===2){
    // 左右から飛び込み中心
-   sideFx(brand(),1750); sideFx(brand(),2650); sideFx(brand(),3550); sideFx(brand(),4450); sideFx(brand(),5350); sideFx(brand(),6250);
+   sideFx(brand(),1550); sideFx(brand(),2250); sideFx(brand(),2950); sideFx(brand(),3650); sideFx(brand(),4350); sideFx(brand(),5050); sideFx(brand(),5750); sideFx(brand(),6450);
  }else if(mode===3){
    // 放射状を主役にする回
    radialBurst(brand(),1800); radialBurst(brand(),3000); radialBurst(brand(),4200); radialBurst(brand(),5400); radialBurst(brand(),6600);
  }else if(mode===4){
    // 大小ランダムにポップ
-   for(let g=0;g<8;g++) setTimeout(()=>{
-     const n=5+Math.floor(Math.random()*6);
+   for(let g=0;g<10;g++) setTimeout(()=>{
+     const n=7+Math.floor(Math.random()*7);
      for(let j=0;j<n;j++) addItem(brand(),Math.floor(Math.random()*4),Math.random()*500,1100+Math.random()*1700);
    },1900+g*850);
  }else if(mode===5){
@@ -452,7 +456,7 @@ function runChampagneShow(name){
    },2000+i*1050);
  }else if(mode===6){
    // 下から噴き上げ花火風
-   for(let i=0;i<20;i++) setTimeout(()=>{
+   for(let i=0;i<16;i++) setTimeout(()=>{
     const w=brand();
     fireworksAt(innerWidth*(.12+Math.random()*.76),innerHeight*(.22+Math.random()*.48));
     addItem(w,Math.floor(Math.random()*4),Math.random()*420,1250+Math.random()*1450);
