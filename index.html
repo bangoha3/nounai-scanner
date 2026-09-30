@@ -256,7 +256,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.73</div>
+  <div class="versionMark">VERSION 3.74</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -279,7 +279,7 @@ function chinpoPictV360(){
 
 const strong=["酒","チンポ","ちんこ","金","男","愛","ＬＯＶＥ","うどん","クスリ","裏引き","枕","整形","腹減った","ダルい","SEX","罰金","太客","休み","素飲み"]; const normal=[]; const mains=[...strong,...normal];
 const subs=[...strong,...normal]; const smallSubs=["並木通り","銀座8丁目","銀座ＳＩＸ","銀座三越","ポルシェビル","銀座会館"];
-const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グリュック","グラシャン"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
+const hundredSet=new Set(strong); const champagneBrands=["ドンペリ","ヴーヴ","クリスタル","サロン","サロンマグナム","Ｐ２","Ｐ３","ピンドン","ラベイ","ベルエポック","グラシャン","アルマンド","ソウメイ","クリュッグ","クリスタルロゼ","ローランペリエ","アンリジロー"]; const bagTypes=["バーキン25","ケリー","カプシーヌ","ピコタン","マトラッセ","ココハンドル","ピーカブー","レディデオール","パズル","ハンモック","ボリード","ブックトート","ブリヨン"];
 const sexPositions=["正常位","騎乗位","バック","立ちバック","座位","対面座位","背面座位","側位","寝バック","駅弁","松葉崩し","だいしゅきホールド","ロールスロイス"];
 const bagBrand={
  "バーキン25":"HERMÈS","ケリー":"HERMÈS","ピコタン":"HERMÈS",
@@ -380,7 +380,11 @@ function runChampagneShow(name){
  opener.textContent="シャンパン🥂";
  stage.appendChild(opener);
 
- const brand=()=>champagneBrands[Math.floor(Math.random()*champagneBrands.length)];
+ let champagnePool=[];
+ const brand=()=>{
+  if(!champagnePool.length){champagnePool=[...champagneBrands].sort(()=>Math.random()-.5);}
+  return champagnePool.pop();
+ };
  const singleChampFirework=Math.random()<1/30;
  const singleBrand=brand();
 
@@ -414,7 +418,7 @@ function runChampagneShow(name){
    },9000);
    return;
  }
- const mode=Math.floor(Math.random()*7);
+ const mode=Math.floor(Math.random()*8);
 
  // 冒頭も毎回少し変える
  if(mode===0||mode===4) setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
@@ -446,6 +450,13 @@ function runChampagneShow(name){
      fireworksAt(innerWidth*(.18+Math.random()*.64),innerHeight*(.18+Math.random()*.55));
      addItem(brand(),3,100,1700);
    },2000+i*1050);
+ }else if(mode===6){
+   // 下から噴き上げ花火風
+   for(let i=0;i<20;i++) setTimeout(()=>{
+    const w=brand();
+    fireworksAt(innerWidth*(.12+Math.random()*.76),innerHeight*(.22+Math.random()*.48));
+    addItem(w,Math.floor(Math.random()*4),Math.random()*420,1250+Math.random()*1450);
+   },1450+i*285);
  }else{
    // 完全ミックス
    const fxs=[
