@@ -123,6 +123,21 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 .newChinpoPict .pL{left:0}.newChinpoPict .pR{right:0}
 
 .brandPict{display:none!important}
+
+.champFountainWord{
+ position:absolute; left:0; top:0; z-index:16;
+ font-weight:900; white-space:nowrap; pointer-events:none;
+ color:var(--fc);
+ text-shadow:0 0 7px currentColor,0 0 18px currentColor;
+ animation:champFountainRise var(--fd) cubic-bezier(.18,.72,.22,1) forwards;
+}
+@keyframes champFountainRise{
+ 0%{transform:translate(var(--sx),105vh) scale(.45) rotate(var(--fr));opacity:0}
+ 10%{opacity:1}
+ 72%{transform:translate(var(--ex),var(--ey)) scale(1.05) rotate(0deg);opacity:1}
+ 100%{transform:translate(var(--ex),var(--ey)) scale(.75) rotate(var(--fr2));opacity:0}
+}
+
 </style>
 
 <style id="launch-v346">
@@ -256,7 +271,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.75</div>
+  <div class="versionMark">VERSION 3.76</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -362,7 +377,29 @@ function fireworksAt(x,y){
 function addItem(word,mode,delay,duration){
  const e=document.createElement("div");e.className="item";
  let shown=pict(word);
- if((word==="愛"||word==="ＬＯＶＥ") && Math.random()<.55){
+ if((word==="愛"||word==="ＬＯＶＥ") && Math.random()<.
+function champagneFountainWord(word,delay=0){
+ setTimeout(()=>{
+  const e=document.createElement("div");
+  e.className="champFountainWord";
+  e.textContent=word;
+  const sx=(8+Math.random()*78)+"vw";
+  const ex=(5+Math.random()*80)+"vw";
+  const ey=(10+Math.random()*52)+"vh";
+  e.style.setProperty("--sx",sx);
+  e.style.setProperty("--ex",ex);
+  e.style.setProperty("--ey",ey);
+  e.style.setProperty("--fr",(-28+Math.random()*56)+"deg");
+  e.style.setProperty("--fr2",(-20+Math.random()*40)+"deg");
+  e.style.setProperty("--fd",(1.8+Math.random()*.8)+"s");
+  e.style.setProperty("--fc",colors[Math.floor(Math.random()*colors.length)]);
+  e.style.fontSize=(22+Math.random()*24)+"px";
+  stage.appendChild(e);
+  setTimeout(()=>e.remove(),3000);
+ },delay);
+}
+
+55){
    shown=(Math.random()<.5?"❤️ ":"")+shown+(Math.random()<.7?" ❤️":"");
  }
  e.innerHTML=shown;
@@ -422,7 +459,7 @@ function runChampagneShow(name){
    },9000);
    return;
  }
- const mode=Math.random()<.30?6:[0,1,2,3,4,5,7][Math.floor(Math.random()*7)];
+ const mode=Math.random()<1/3?6:[0,1,2,3,4,5,7][Math.floor(Math.random()*7)];
 
  // 冒頭も毎回少し変える
  if(mode===0||mode===4) setTimeout(()=>fireworksAt(innerWidth*.5,innerHeight*.5),650);
@@ -455,12 +492,14 @@ function runChampagneShow(name){
      addItem(brand(),3,100,1700);
    },2000+i*1050);
  }else if(mode===6){
-   // 下から噴き上げ花火風
-   for(let i=0;i<16;i++) setTimeout(()=>{
-    const w=brand();
-    fireworksAt(innerWidth*(.12+Math.random()*.76),innerHeight*(.22+Math.random()*.48));
-    addItem(w,Math.floor(Math.random()*4),Math.random()*420,1250+Math.random()*1450);
-   },1450+i*285);
+   // 本物の「下から噴き上げ」：銘柄そのものが画面下から上へ飛ぶ
+   for(let i=0;i<24;i++){
+     champagneFountainWord(brand(),i*230);
+   }
+   // 数発だけ花火を混ぜて噴水花火らしくする
+   for(let i=0;i<6;i++) setTimeout(()=>{
+     fireworksAt(innerWidth*(.15+Math.random()*.7),innerHeight*(.18+Math.random()*.45));
+   },2100+i*720);
  }else{
    // 完全ミックス
    const fxs=[
