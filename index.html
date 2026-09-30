@@ -124,14 +124,15 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 
 .brandPict{display:none!important}
 
-.champJet{position:absolute;z-index:15;left:0;top:0;font-weight:900;white-space:nowrap;pointer-events:none;
-color:var(--jc);text-shadow:0 0 7px currentColor;
-animation:champJetUp 1.75s cubic-bezier(.18,.72,.25,1) both}
+.champJet{position:absolute;z-index:15;left:0;top:0;font-weight:900;white-space:nowrap;
+writing-mode:vertical-rl;text-orientation:upright;letter-spacing:.05em;pointer-events:none;
+color:var(--jc);text-shadow:0 0 6px currentColor,0 0 14px currentColor;
+animation:champJetUp var(--jd) cubic-bezier(.12,.72,.20,1) both}
 @keyframes champJetUp{
-0%{transform:translate(var(--jx),100vh) scale(.55);opacity:0}
-12%{opacity:1}
-72%{transform:translate(var(--jx2),var(--jy)) scale(1.05);opacity:1}
-100%{transform:translate(var(--jx2),var(--jy2)) scale(.82);opacity:0}
+0%{transform:translate(var(--jx),108vh) rotate(var(--jr)) scale(.42);opacity:0}
+7%{opacity:1}
+68%{transform:translate(var(--jx2),var(--jy)) rotate(var(--jr2)) scale(1.02);opacity:1}
+100%{transform:translate(var(--jx3),var(--jy2)) rotate(var(--jr3)) scale(.72);opacity:0}
 }
 
 </style>
@@ -267,7 +268,7 @@ animation:champJetUp 1.75s cubic-bezier(.18,.72,.25,1) both}
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.80</div>
+  <div class="versionMark">VERSION 3.81</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -391,15 +392,21 @@ function champJet(word,delay){
    const e=document.createElement("div");
    e.className="champJet";
    e.textContent=word;
-   const x=8+Math.random()*72;
+   const x=38+Math.random()*24;
+   const spread=(Math.random()-.5)*78;
    e.style.setProperty("--jx",x+"vw");
-   e.style.setProperty("--jx2",(x-7+Math.random()*14)+"vw");
-   e.style.setProperty("--jy",(16+Math.random()*45)+"vh");
-   e.style.setProperty("--jy2",(7+Math.random()*30)+"vh");
+   e.style.setProperty("--jx2",(x+spread*.55)+"vw");
+   e.style.setProperty("--jx3",(x+spread)+"vw");
+   e.style.setProperty("--jy",(24+Math.random()*34)+"vh");
+   e.style.setProperty("--jy2",(-12+Math.random()*28)+"vh");
+   e.style.setProperty("--jr",(-8+Math.random()*16)+"deg");
+   e.style.setProperty("--jr2",(-18+Math.random()*36)+"deg");
+   e.style.setProperty("--jr3",(-30+Math.random()*60)+"deg");
+   e.style.setProperty("--jd",(2.35+Math.random()*1.15)+"s");
    e.style.setProperty("--jc",colors[Math.floor(Math.random()*colors.length)]);
-   e.style.fontSize=(20+Math.random()*20)+"px";
+   e.style.fontSize=(18+Math.random()*17)+"px";
    stage.appendChild(e);
-   setTimeout(()=>e.remove(),1900);
+   setTimeout(()=>e.remove(),3700);
  },delay);
 }
 
@@ -464,7 +471,7 @@ function runChampagneShow(name){
    barrageFx(brand(),1600); barrageFx(brand(),2350); barrageFx(brand(),3100); barrageFx(brand(),3850); barrageFx(brand(),4600); barrageFx(brand(),5350); barrageFx(brand(),6100); barrageFx(brand(),6850);
  }else if(mode===1){
    // 雨中心
-   rainFx(brand(),1600); rainFx(brand(),2350); rainFx(brand(),3100); rainFx(brand(),3850); rainFx(brand(),4600); rainFx(brand(),5350); rainFx(brand(),6100); rainFx(brand(),6850);
+   rainFx(brand(),1600); rainFx(brand(),4700); rainFx(brand(),3100); rainFx(brand(),7700); rainFx(brand(),4600); rainFx(brand(),10700); rainFx(brand(),6100); rainFx(brand(),13700);
  }else if(mode===2){
    // 左右から飛び込み中心
    sideFx(brand(),1550); sideFx(brand(),2250); sideFx(brand(),2950); sideFx(brand(),3650); sideFx(brand(),4350); sideFx(brand(),5050); sideFx(brand(),5750); sideFx(brand(),6450);
@@ -485,7 +492,7 @@ function runChampagneShow(name){
    },2000+i*1050);
  }else if(mode===6){
    // 軽量専用・下から噴き上げ：14銘柄だけを順番に発射
-   for(let i=0;i<14;i++) champJet(brand(),1500+i*360);
+   for(let i=0;i<40;i++) champJet(brand(),900+i*135);
  }else{
    // 完全ミックス
    const fxs=[
@@ -495,7 +502,7 @@ function runChampagneShow(name){
      ()=>radialBurst(brand(),0),
      ()=>{for(let j=0;j<5;j++)addItem(brand(),Math.floor(Math.random()*4),Math.random()*450,1200+Math.random()*1300);}
    ];
-   for(let i=0;i<10;i++) setTimeout(()=>fxs[Math.floor(Math.random()*fxs.length)](),1700+i*(480+Math.random()*220));
+   for(let i=0;i<20;i++) setTimeout(()=>fxs[Math.floor(Math.random()*fxs.length)](),1700+i*(480+Math.random()*220));
  }
 
  // 終盤も毎回少し違うアクセント
