@@ -123,6 +123,17 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
 .newChinpoPict .pL{left:0}.newChinpoPict .pR{right:0}
 
 .brandPict{display:none!important}
+
+.champJet{position:absolute;z-index:15;left:0;top:0;font-weight:900;white-space:nowrap;pointer-events:none;
+color:var(--jc);text-shadow:0 0 7px currentColor;
+animation:champJetUp 1.75s cubic-bezier(.18,.72,.25,1) both}
+@keyframes champJetUp{
+0%{transform:translate(var(--jx),100vh) scale(.55);opacity:0}
+12%{opacity:1}
+72%{transform:translate(var(--jx2),var(--jy)) scale(1.05);opacity:1}
+100%{transform:translate(var(--jx2),var(--jy2)) scale(.82);opacity:0}
+}
+
 </style>
 
 <style id="launch-v346">
@@ -256,7 +267,7 @@ background:radial-gradient(circle,#332600 0,#120d00 45%,#000 78%);animation:cham
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.78</div>
+  <div class="versionMark">VERSION 3.80</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -374,9 +385,27 @@ function addItem(word,mode,delay,duration){
  stage.appendChild(e); setTimeout(()=>e.remove(),delay+duration+200);
 }
 
+
+function champJet(word,delay){
+ setTimeout(()=>{
+   const e=document.createElement("div");
+   e.className="champJet";
+   e.textContent=word;
+   const x=8+Math.random()*72;
+   e.style.setProperty("--jx",x+"vw");
+   e.style.setProperty("--jx2",(x-7+Math.random()*14)+"vw");
+   e.style.setProperty("--jy",(16+Math.random()*45)+"vh");
+   e.style.setProperty("--jy2",(7+Math.random()*30)+"vh");
+   e.style.setProperty("--jc",colors[Math.floor(Math.random()*colors.length)]);
+   e.style.fontSize=(20+Math.random()*20)+"px";
+   stage.appendChild(e);
+   setTimeout(()=>e.remove(),1900);
+ },delay);
+}
+
 function runChampagneShow(name){
  // 連続プレイ時に前回の演出DOMが溜まらないよう毎回掃除
- [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict,.champagneOpen")].forEach(x=>x.remove());
+ [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict,.champagneOpen,.champJet")].forEach(x=>x.remove());
  stage.style.display="block";
 
  const opener=document.createElement("div");
@@ -455,20 +484,8 @@ function runChampagneShow(name){
      addItem(brand(),3,100,1700);
    },2000+i*1050);
  }else if(mode===6){
-   // 下から噴き上げ花火風：既存の安定した演出だけで構成
-   // 下側に銘柄を密集させ、時間差で上側へ展開
-   for(let i=0;i<24;i++) setTimeout(()=>{
-     const w=brand();
-     addItem(w,Math.floor(Math.random()*4),Math.random()*260,1300+Math.random()*1200);
-     if(i%4===0) fireworksAt(
-       innerWidth*(.15+Math.random()*.70),
-       innerHeight*(.50+Math.random()*.30)
-     );
-   },1300+i*230);
-   // 後半は上側へ散らして「噴き上がった」感じを強くする
-   for(let i=0;i<12;i++) setTimeout(()=>{
-     addItem(brand(),Math.floor(Math.random()*4),Math.random()*420,1200+Math.random()*900);
-   },4300+i*210);
+   // 軽量専用・下から噴き上げ：14銘柄だけを順番に発射
+   for(let i=0;i<14;i++) champJet(brand(),1500+i*360);
  }else{
    // 完全ミックス
    const fxs=[
