@@ -270,7 +270,7 @@ animation:champJetUp var(--jd) cubic-bezier(.12,.72,.20,1) both}
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.85</div>
+  <div class="versionMark">VERSION 3.86</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -1077,9 +1077,9 @@ document.getElementById("again").onclick=()=>{
  const obs=new MutationObserver(ms=>{
    for(const m of ms) for(const n of m.addedNodes){
      if(n.nodeType===1 && SUB_SMALL.has((n.textContent||"").trim())){
-       n.style.fontSize="clamp(12px,3.4vw,18px)";
-       n.style.fontWeight="600";
-       n.style.opacity=".72";
+       n.style.fontSize="clamp(10px,2.7vw,15px)";
+       n.style.fontWeight="500";
+       n.style.opacity=".48";
      }
    }
  });
