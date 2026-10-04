@@ -270,7 +270,7 @@ animation:champJetUp var(--jd) cubic-bezier(.12,.72,.20,1) both}
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.86</div>
+  <div class="versionMark">VERSION 3.88</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -438,7 +438,7 @@ function runChampagneShow(name){
  const singleBrand=brand();
 
  if(singleChampFirework){
-   // 一銘柄を主キーワードのように、シンプルな打ち上げ花火で見せる
+   // 1/30：一銘柄を主役にした打ち上げ花火演出
    setup.style.display="none";
    stage.style.display="block";
    stage.innerHTML="";
@@ -454,7 +454,7 @@ function runChampagneShow(name){
 
    const chosen=Math.random()<.5?singleBrand:"グラシャン";
    setTimeout(()=>{
-     [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict")].forEach(x=>x.remove());
+     [...stage.querySelectorAll(".item,.spark,.barrage,.dropFx,.sidePop,.radialBurst,.brandPict,.champJet")].forEach(x=>x.remove());
      document.querySelectorAll(".seikeiJudge").forEach(e=>e.remove());
      revealFinalCalm(); final.classList.add("champagneFinal"); document.getElementById("again").style.display="block";
      finalWord.textContent=chosen;
@@ -467,6 +467,7 @@ function runChampagneShow(name){
    },9000);
    return;
  }
+
  const mode=Math.random()<1/7?6:[0,1,2,3,4,5,7][Math.floor(Math.random()*7)];
 
  // 冒頭も毎回少し変える
@@ -480,7 +481,7 @@ function runChampagneShow(name){
    barrageFx(brand(),1600); barrageFx(brand(),2350); barrageFx(brand(),3100); barrageFx(brand(),3850); barrageFx(brand(),4600); barrageFx(brand(),5350); barrageFx(brand(),6100); barrageFx(brand(),6850);
  }else if(mode===1){
    // 雨中心
-   rainFx(brand(),1600); rainFx(brand(),4700); rainFx(brand(),3100); rainFx(brand(),7700); rainFx(brand(),4600); rainFx(brand(),10700); rainFx(brand(),6100); rainFx(brand(),13700);
+   rainFx(brand(),1500); rainFx(brand(),2350); rainFx(brand(),3200); rainFx(brand(),4050); rainFx(brand(),4900); rainFx(brand(),5750); rainFx(brand(),6600);
  }else if(mode===2){
    // 左右から飛び込み中心
    sideFx(brand(),1550); sideFx(brand(),2250); sideFx(brand(),2950); sideFx(brand(),3650); sideFx(brand(),4350); sideFx(brand(),5050); sideFx(brand(),5750); sideFx(brand(),6450);
@@ -500,8 +501,8 @@ function runChampagneShow(name){
      addItem(brand(),3,100,1700);
    },2000+i*1050);
  }else if(mode===6){
-   // 軽量専用・下から噴き上げ：14銘柄だけを順番に発射
-   for(let i=0;i<56;i++) champJet(brand(),450+i*105);
+   // 軽量専用・下から噴き上げ：銘柄を入れ替えながら順番に発射
+   for(let i=0;i<60;i++) champJet(brand(),450+i*90);
    // 主役は噴き上げ。追加演出は少量だけ重ねてiPhone負荷を抑える
    setTimeout(()=>sideFx(brand(),0),2300);
    setTimeout(()=>sideFx(brand(),0),5900);
@@ -514,7 +515,7 @@ function runChampagneShow(name){
      ()=>radialBurst(brand(),0),
      ()=>{for(let j=0;j<5;j++)addItem(brand(),Math.floor(Math.random()*4),Math.random()*450,1200+Math.random()*1300);}
    ];
-   for(let i=0;i<20;i++) setTimeout(()=>fxs[Math.floor(Math.random()*fxs.length)](),1700+i*(480+Math.random()*220));
+   for(let i=0;i<10;i++) setTimeout(()=>fxs[Math.floor(Math.random()*fxs.length)](),1700+i*(620+Math.random()*180));
  }
 
  // 終盤も毎回少し違うアクセント
