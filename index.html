@@ -15,6 +15,17 @@ button{font-size:24px;font-weight:800;padding:20px;border:0;border-radius:20px;b
 box-shadow:none;pointer-events:none;
 animation:picPop 1.8s ease-in-out both}
 @keyframes picPop{0%{transform:scale(.15) rotate(-14deg);opacity:0}45%{transform:scale(1.08) rotate(5deg);opacity:1}100%{transform:scale(.9) rotate(-3deg);opacity:.9}}
+/* Mari: cute blue frame */
+.mariFrame{
+ border:4px solid #8ed8ff!important;
+ outline:2px solid rgba(54,126,255,.92);
+ outline-offset:2px;
+ border-radius:24px!important;
+ background:linear-gradient(145deg,#dff6ff,#73b9ff 52%,#315dff);
+ padding:3px;
+ box-shadow:0 0 0 3px rgba(197,235,255,.78),0 0 18px rgba(71,153,255,.9),0 0 34px rgba(44,91,255,.48)!important;
+}
+
 #takashiFinalPic{display:none}
 #final>*:not(#takashiFinalPic){position:relative;z-index:2}
 #final small{position:absolute!important;top:3vh;left:50%;transform:translateX(-50%);z-index:30}
@@ -270,7 +281,7 @@ animation:champJetUp var(--jd) cubic-bezier(.12,.72,.20,1) both}
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.89</div>
+  <div class="versionMark">VERSION 3.90</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -661,6 +672,7 @@ function finalTakashiFaces(imgSrc=TAKASHI_MARI_IMG){
  const addFace=(x,y,size,rot,opacity)=>{
    const im=document.createElement("img");
    im.className="finalFace";
+   if(imgSrc===TAKASHI_MARI_IMG) im.classList.add("mariFrame");
    im.src=imgSrc;
    im.style.width=size+"vw";
    im.style.left=x+"vw";
@@ -705,7 +717,9 @@ function finalMariaFaces(){
 function addTakashiPic(delay,imgSrc=TAKASHI_MARI_IMG){
  setTimeout(()=>{
    const im=document.createElement("img");
-   im.className="takashiPic"; im.src=imgSrc;
+   im.className="takashiPic";
+   if(imgSrc===TAKASHI_MARI_IMG) im.classList.add("mariFrame");
+   im.src=imgSrc;
    const w=34+Math.random()*28;
    im.style.width=w+"vw";
    im.style.maxWidth="330px";
