@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>銀脳 v3.93</title>
+<title>銀脳 v3.94</title>
 <meta name="description" content="銀座クラブ専用 脳内スキャナー">
 <meta property="og:type" content="website">
-<meta property="og:title" content="銀脳 v3.93">
+<meta property="og:title" content="銀脳 v3.94">
 <meta property="og:description" content="銀座クラブ専用
 脳内スキャナー">
 <meta property="og:url" content="https://nounai-scanner.ia4t-fkd.workers.dev/">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="銀脳 v3.93">
+<meta name="twitter:title" content="銀脳 v3.94">
 <meta name="twitter:description" content="銀座クラブ専用 脳内スキャナー">
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
@@ -26,7 +26,7 @@ animation:picPop 1.8s ease-in-out both}
 @keyframes picPop{0%{transform:scale(.15) rotate(-14deg);opacity:0}45%{transform:scale(1.08) rotate(5deg);opacity:1}100%{transform:scale(.9) rotate(-3deg);opacity:.9}}
 /* Mari decoration is baked into the compressed image. */
 .mariFrame{border:0!important;outline:0!important;background:none!important;padding:0!important;box-shadow:none!important}
-.mariGoldPic{position:absolute;z-index:9;width:clamp(34px,9vw,68px);height:auto;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 7px rgba(255,205,55,.75));animation:mariGoldIn 2.15s ease-in-out both}
+.mariGoldPic{position:absolute;z-index:9;width:clamp(68px,18vw,136px);height:auto;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 7px rgba(255,205,55,.75));animation:mariGoldIn 2.15s ease-in-out both}
 @keyframes mariGoldIn{0%{transform:translate(-50%,-50%) scale(.15) rotate(-15deg);opacity:0}38%{transform:translate(-50%,-50%) scale(1.08) rotate(4deg);opacity:1}100%{transform:translate(-50%,-50%) scale(.92) rotate(-3deg);opacity:0}}
 
 #takashiFinalPic{display:none}
@@ -284,7 +284,7 @@ animation:champJetUp var(--jd) cubic-bezier(.12,.72,.20,1) both}
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.93</div>
+  <div class="versionMark">VERSION 3.94</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -675,8 +675,8 @@ function addMariGoldPic(delay){
    im.className="mariGoldPic"; im.src=MARI_GOLD_IMG;
    im.style.left=(8+Math.random()*84)+"vw";
    im.style.top=(12+Math.random()*66)+"vh";
-   im.style.width=(7+Math.random()*4)+"vw";
-   im.style.maxWidth="68px";
+   im.style.width=(14+Math.random()*8)+"vw";
+   im.style.maxWidth="136px";
    stage.appendChild(im);
    setTimeout(()=>im.remove(),2300);
  },delay);
