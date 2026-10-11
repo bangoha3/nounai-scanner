@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>銀脳 v3.94</title>
+<title>銀脳 v3.95</title>
 <meta name="description" content="銀座クラブ専用 脳内スキャナー">
 <meta property="og:type" content="website">
-<meta property="og:title" content="銀脳 v3.94">
+<meta property="og:title" content="銀脳 v3.95">
 <meta property="og:description" content="銀座クラブ専用
 脳内スキャナー">
 <meta property="og:url" content="https://nounai-scanner.ia4t-fkd.workers.dev/">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="銀脳 v3.94">
+<meta name="twitter:title" content="銀脳 v3.95">
 <meta name="twitter:description" content="銀座クラブ専用 脳内スキャナー">
 <style>
 *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05070b;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
@@ -284,7 +284,7 @@ animation:champJetUp var(--jd) cubic-bezier(.12,.72,.20,1) both}
     <div class="inputWrap"><input id="name" placeholder="名前を入力してください"></div>
     <button id="start">START <span>›</span></button>
   </div>
-  <div class="versionMark">VERSION 3.94</div>
+  <div class="versionMark">VERSION 3.95</div>
 </section>
 <section id="stage">
 <div id="status">NEURAL SCAN</div>
@@ -340,6 +340,7 @@ function mainFor(name){
  if(raw.endsWith("❤️")||raw.endsWith("❤"))return "整形";
  if(raw==="ひかり"||raw==="ヒカリ")return "シャブ";
  if(raw==="高士")return "さくら";
+ if(n==="さくら")return "変動金利";
  if(raw==="タカシ")return "千景";
  if(n==="たかし")return "まり";
  if(n==="まり")return "ちんこ";
@@ -820,6 +821,7 @@ function radialBurst(word,delay){
 
 function accentWord(main){
  const scatter={
+ "変動金利":["40年","住宅ローン","親子ペアローン","1.25%","1.50%","2%","3%","ローン控除無し","団信","修繕積立費","管理費","固定資産税"],
  "酒":["シャンパン","ゲロ","🤮","ワイン","テキーラ","炭酸","ミネラルウォーター","ボトル","グラシャン","二日酔い","乾杯","記憶なし","ブラックアウト"],
  "チンポ":["大きいの","デカいの","長持ち","早漏","長い","短い","極太","中折れ","遅漏","朝立ち","フル勃起","サイズ","テクニック"],
  "ちんこ":["大きいの","デカいの","長持ち","早漏","長い","短い","極太","中折れ","遅漏","朝立ち","フル勃起","サイズ","テクニック"],
@@ -887,9 +889,10 @@ function runShow(name){
  const main=customerMaria?"まりあ":mainFor(effectiveName), secondary=secondaryFor(effectiveName,main);
  // Mixing ratio varies every scan. Special five words sometimes get a pure 100% run.
  const rawName=effectiveName.normalize("NFKC").trim(); const nn=normalizeName(effectiveName);
- const pure=(customerMaria||nn==="ひかり"||rawName==="高士"||rawName==="タカシ"||nn==="たかし"||nn==="まり"||nn==="まりあ"||nn==="みくも"||hundredSet.has(main));
+ const pure=(nn==="さくら"||customerMaria||nn==="ひかり"||rawName==="高士"||rawName==="タカシ"||nn==="たかし"||nn==="まり"||nn==="まりあ"||nn==="みくも"||hundredSet.has(main));
  const mainRatio=pure?1:(.58+Math.random()*.32); // strong keywords are always 100% except explicit scatter rules
  const mode=Math.floor(Math.random()*4);
+ const exactSakura=nn==="さくら";
  const exactTakashi=rawName==="たかし";
  const exactKatakanaTakashi=rawName==="タカシ";
  const exactKanjiTakashi=rawName==="高士";
@@ -988,7 +991,9 @@ function runShow(name){
      word=["寿司","焼肉","ステーキ","天ぷら","ラーメン"][Math.floor(Math.random()*4)];
    } else if((main==="裏引き"||main==="枕") && Math.random()<.14){
      word=Math.random()<.5?"金ヅル":"色恋";
-   } else if((nn!=="ひかり"&&rawName!=="高士"&&rawName!=="タカシ"&&nn!=="たかし"&&nn!=="まり"&&nn!=="まりあ"&&nn!=="みくも") && Math.random()<.12){
+   } else if(exactSakura && Math.random()<.12){
+     word=Math.random()<.5?"明治通り":"恵比寿";
+   } else if((nn!=="ひかり"&&nn!=="さくら"&&rawName!=="高士"&&rawName!=="タカシ"&&nn!=="たかし"&&nn!=="まり"&&nn!=="まりあ"&&nn!=="みくも") && Math.random()<.12){
      word=smallSubs[Math.floor(Math.random()*smallSubs.length)];
    } else {
      word=Math.random()<mainRatio?accentWord(main):secondary;
@@ -1095,7 +1100,8 @@ document.getElementById("start").onclick=async()=>{
  if(navigator.vibrate)navigator.vibrate(50);
  // Exact typed special modes always win.
  const specialName=normalizeName(name);
- if(specialName==="しゃんぱん") runChampagneShow(name);
+ if(specialName==="さくら") runShow(name);
+ else if(specialName==="しゃんぱん") runChampagneShow(name);
  else if(specialName==="ばっく") runBagShow(name);
  else if(specialName==="せっくす") runSexShow(name);
  else{
@@ -1117,7 +1123,7 @@ document.getElementById("again").onclick=()=>{
 
 <script>
 (()=>{
- const SUB_SMALL=new Set(["並木通り","銀座8丁目","銀座ＳＩＸ","銀座三越","ポルシェビル","銀座会館"]);
+ const SUB_SMALL=new Set(["明治通り","恵比寿","並木通り","銀座8丁目","銀座ＳＩＸ","銀座三越","ポルシェビル","銀座会館"]);
  const obs=new MutationObserver(ms=>{
    for(const m of ms) for(const n of m.addedNodes){
      if(n.nodeType===1 && SUB_SMALL.has((n.textContent||"").trim())){
